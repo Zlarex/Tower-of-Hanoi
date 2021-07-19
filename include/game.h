@@ -180,4 +180,28 @@ void *gameRun(Tower *T);
  */
 void *gameTimer(Tower *T);
 
+/**
+ * [Deskripsi]
+ * Menyimpan skor dari permainan
+ * 
+ * @author
+ */
+void saveHighScore(Game game);
+
+/**
+ * [Deskripsi]
+ * Menghapus semua skor yang tersimpan
+ * 
+ * @author
+ */
+void deleteAllHighScore();
+
+/**
+ * [Deskripsi]
+ * Menghapus semua skor yang tersimpan
+ * 
+ * @author
+ */
+void deleteAllHighScore();
+
 #endif
