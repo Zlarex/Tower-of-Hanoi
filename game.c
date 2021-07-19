@@ -144,7 +144,7 @@ int getMinMoves(int towerLevel)
  * 
  * @author
  */
-void moveBlock(Tower* src, Tower* dest)
+void moveDisk(Tower* src, Tower* dest)
 {
 
 }
