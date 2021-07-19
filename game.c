@@ -214,3 +214,25 @@ void *gameTimer(Tower *T)
 {
 
 }
+
+/**
+ * [Deskripsi]
+ * Menyimpan skor dari permainan
+ * 
+ * @author
+ */
+void saveHighScore(Game game)
+{
+    
+}
+
+/**
+ * [Deskripsi]
+ * Menghapus semua skor yang tersimpan
+ * 
+ * @author
+ */
+void deleteAllHighScore()
+{
+    
+}

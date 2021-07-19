@@ -196,12 +196,4 @@ void saveHighScore(Game game);
  */
 void deleteAllHighScore();
 
-/**
- * [Deskripsi]
- * Menghapus semua skor yang tersimpan
- * 
- * @author
- */
-void deleteAllHighScore();
-
 #endif
