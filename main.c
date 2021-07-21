@@ -18,5 +18,26 @@
 
 int main()
 {
+	// Game g;
+	// Tower t;
+	// t.top = NULL;
+	// g.right = t;
+	// g.middle = t;
+	// g.left = t;
+	// g.hasGameOver = false;
+	// g.score = 100;
+	// g.maxBlock = 1;
+	// g.moveCount = 10;
+	// memcpy(g.playerName, "ihsan", 5);
+	// g.timeLeft = 10;
+	// g.towerLevel = 1;
+
+	// saveGame(&g, 1);
+	// Game g2 = loadGame(1);
+	// g2.score = 1000;
+
+	// saveHighScore(g);
+	// saveHighScore(g2);
+
 	return 0;
 }

@@ -60,3 +60,6 @@ debug/
 # Dev-C++ Project Files
 *.layout
 Makefile.win
+
+# Game Data
+*.dat

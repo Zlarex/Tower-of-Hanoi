@@ -58,7 +58,7 @@ Address allocate(Address disk, int width)
  */
 void deallocate(Address disk)
 {
-
+    if (disk) free(disk);
 }
 
 /**

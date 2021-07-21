@@ -17,8 +17,22 @@
 #include <stdbool.h>
 #include "all.h"
 
-#define MAX_SAVEGAME 10
 #define MAX_LEVEL 5
+#define MAX_SAVED_GAME 10
+#define MAX_SAVED_SCORE 10
+
+// Kondisi game
+typedef enum _GameState {
+    NONE,
+    WIN,
+    LOSE
+} GameState;
+
+// Tipe game yang dipilih
+typedef enum _GameMode {
+    ORIGINAL,
+    PRACTICE
+} GameMode;
 
 // Sistem Game
 typedef struct _Game {
@@ -31,6 +45,9 @@ typedef struct _Game {
     int score;
     int timeLeft;
     bool hasGameOver;
+    bool isPaused;
+    GameMode mode;
+    GameState state;
     char playerName[50];
 } Game;
 
@@ -135,15 +152,23 @@ void moveDisk(Tower* src, Tower* dest);
  * [Deskripsi]
  * Menyimpan game dengan posisi penyimpanan berdasarkan index
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 bool saveGame(Game *game, int index);
 
 /**
  * [Deskripsi]
+ * Memuat seluruh data permainan tersimpan
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void loadAllSaveGame(char* result, int max);
+
+/**
+ * [Deskripsi]
  * Memuat game yang terdapat pada save game berdasarkan index
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 Game loadGame(int index);
 
@@ -151,49 +176,56 @@ Game loadGame(int index);
  * [Deskripsi]
  * Menghapus data game yang telah tersimpan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
-int deleteGame(int index);
-
+bool deleteGame(int index);
 
 /**
  * [Deskripsi]
  * Titik masuk dari permainan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
-void gameStart(Tower *T);
+void gameBegin(Game *game);
 
 /**
  * [Deskripsi]
  * Menjalankan lojik dari permainan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
-void *gameRun(Tower *T);
+void *gameRun(Game *game);
 
 /**
  * [Deskripsi]
  * Menjalankan timer dari permainan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
-void *gameTimer(Tower *T);
+void *gameTimer(Game *game);
 
 /**
  * [Deskripsi]
  * Menyimpan skor dari permainan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 void saveHighScore(Game game);
 
 /**
  * [Deskripsi]
+ * Menyortir isi dari file highscore
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void sortHighScore(Game *game);
+
+/**
+ * [Deskripsi]
  * Menghapus semua skor yang tersimpan
  * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
-void deleteAllHighScore();
+bool deleteAllHighScore();
 
 #endif
