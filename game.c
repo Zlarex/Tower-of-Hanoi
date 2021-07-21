@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "include/all.h"
+#define ESC 27		//klik esc
 
 /**
  * [Deskripsi]
@@ -104,10 +105,24 @@ void menuCredits(Game *game)
  * Menu untuk keluar dari program
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void menuExit(Game *game)
 {
-
+    char ch;
+    printf("-------------------------------------------------\n");
+    printf("|Apakah Anda yakin ingin meninggalkan permainan? |\n")
+    printf("\n|  Tekan [ESC] untuk keluar                    |\n");
+    printf("=================================================\n")
+    do {
+        ch = getch();
+        if(ch == ESC){
+        	return 0;
+//            system("cls");
+//            main();
+        }
+    } while(ch != ESC);
 }
 
 /**
