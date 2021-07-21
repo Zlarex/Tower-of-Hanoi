@@ -77,6 +77,8 @@ void menuHighScore(Game *game)
  * Menu untuk menampilkan informasi mengenai game dan/atau developer
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void menuCredits(Game *game)
 {
