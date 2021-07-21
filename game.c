@@ -80,7 +80,21 @@ void menuHighScore(Game *game)
  */
 void menuCredits(Game *game)
 {
-
+	printf("***********************************************************************************\n");
+	printf("/t/t/t/t TOWER OF HANOI\n");
+	printf("***********************************************************************************\n\n");
+	printf("/t/t Permainan yang bertujuan untuk melatih kemampuan\n");
+	printf("/t/t matematis anda dalam memperhitungkan langkah untuk\n");
+	printf("/t/t menyelesaikan permasalahan yang dilakukan dengan cara\n");
+	printf("/t/t memindahkan seluruh disk pada tower yang ada di ujung\n");
+	printf("===================================================================================\n\n");
+	printf("--------------------------------------------------------\n");
+	printf("|Tower of Hanoi dibuat oleh :					       |\n");
+	printf("|Diana Fauziah - Tunjukkan Versi Terbaik Anda!!!!      |\n");
+	printf("|Ihsan Fauzan Hanif - Hanyalah seorang remaja (iyakah?)|\n");
+	printf("|                     Menyukai dunia pemrograman	   |\n");
+	printf("|M Aziz Taufiqurrahman - (deskripsi diri)			   |\n");
+	printf("--------------------------------------------------------\n");
 }
 
 /**
