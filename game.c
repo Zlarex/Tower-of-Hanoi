@@ -27,10 +27,8 @@
  * 07/21/21
  */
 void createGame(Game *game)
-{
-	game->left.top = NULL;
-	game->right.top = NULL;
-	game->middle.top = NULL;
+{	
+	memset(game, 0, sizeof(Game)); //membuat semua game kosong/membentuk game baru
 }
 
 
