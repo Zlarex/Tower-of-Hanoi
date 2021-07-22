@@ -196,4 +196,14 @@ void saveHighScore(Game game);
  */
 void deleteAllHighScore();
 
+/**
+ * [Deskripsi]
+ * Menampilkan taktik bermain Tower of hanoi
+ * 
+ * @author 
+ * Diana Fauziah
+ * 07/22/21
+ */
+void ShowStep(Game *game, int choose);
+
 #endif
