@@ -23,6 +23,7 @@
 #endif
 
 #include "include/all.h"
+#define ESC 27		//klik esc
 
 /**
  * [Deskripsi]
@@ -85,10 +86,26 @@ void menuHighScore(Game *game)
  * Menu untuk menampilkan informasi mengenai game dan/atau developer
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void menuCredits(Game *game)
 {
-
+	printf("***********************************************************************************\n");
+	printf("/t/t/t/t TOWER OF HANOI\n");
+	printf("***********************************************************************************\n\n");
+	printf("/t/t Permainan yang bertujuan untuk melatih kemampuan\n");
+	printf("/t/t matematis anda dalam memperhitungkan langkah untuk\n");
+	printf("/t/t menyelesaikan permasalahan yang dilakukan dengan cara\n");
+	printf("/t/t memindahkan seluruh disk pada tower yang ada di ujung\n");
+	printf("===================================================================================\n\n");
+	printf("--------------------------------------------------------\n");
+	printf("|Tower of Hanoi dibuat oleh :					       |\n");
+	printf("|Diana Fauziah - Tunjukkan Versi Terbaik Anda!!!!      |\n");
+	printf("|Ihsan Fauzan Hanif - Hanyalah seorang remaja (iyakah?)|\n");
+	printf("|                     Menyukai dunia pemrograman	   |\n");
+	printf("|M Aziz Taufiqurrahman - (deskripsi diri)			   |\n");
+	printf("--------------------------------------------------------\n");
 }
 
 /**
@@ -96,10 +113,24 @@ void menuCredits(Game *game)
  * Menu untuk keluar dari program
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void menuExit(Game *game)
 {
-
+    char ch;
+    printf("-------------------------------------------------\n");
+    printf("|Apakah Anda yakin ingin meninggalkan permainan? |\n")
+    printf("\n|  Tekan [ESC] untuk keluar                    |\n");
+    printf("=================================================\n")
+    do {
+        ch = getch();
+        if(ch == ESC){
+        	return 0;
+//            system("cls");
+//            main();
+        }
+    } while(ch != ESC);
 }
 
 /**
