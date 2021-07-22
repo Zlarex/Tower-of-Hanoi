@@ -322,10 +322,10 @@ void ShowStep(Game *game, int choose){
 		printf("....................\n");
 		printf("31. disk 1 -> tower B\n");
 	}else if (choose == 5){
-		printf("Level 3\n");
+		printf("Level 5\n");
 		printf("-------------------------------------------\n");
 		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 6 piringan berarti -> 2^6 - 1 = 63 (langkah)\n");
+		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
 		printf("3. disk 1 -> tower C\n");
 		printf("....................\n");
 		printf("15. disk 1 -> tower B\n");
