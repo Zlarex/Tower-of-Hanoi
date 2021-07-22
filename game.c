@@ -277,20 +277,127 @@ void gameBegin(Game *game)
     game->timeLeft = 10;
 
     pthread_t thGameRun, thGameTimer;
-    pthread_create(&thGameRun, NULL, gameRun, NULL);
-    pthread_create(&thGameTimer, NULL, gameTimer, NULL);
+    pthread_create(&thGameRun, NULL, gameRun, game);
+    pthread_create(&thGameTimer, NULL, gameTimer, game);
     pthread_join(thGameRun, NULL);
     pthread_join(thGameTimer, NULL);
 }
 
 /**
  * [Deskripsi]
+ * Menampilkan output isi dari tower berdasarkan string.
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void printTowerStr(char *str, int width)
+{
+	int i;
+	for (i = 0; i < strlen(str); i++)
+	{
+		if (i == 0) continue;
+		printf("%c", (int)*(str + i));
+	}
+	printf("\n");
+}
+
+/**
+ * [Deskripsi]
+ * Menampilkan tampilan dari tower
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void printTower(Game* g)
+{
+	#define BLOCK 219
+	#define UNDERLINE 196
+	#define POLE 179
+	int sizeEach = 2;
+	int width = 3 + 3 + (g->maxBlock * (2 * sizeEach) * 3); // tower + padding + disk len (2 = tambahan kiri-kanan, 3 = banyak tower)
+
+	//     --|--         --|--         --|--
+	//   ----|----     ----|----     ----|----
+	// ------|------ ------|------ ------|------
+	
+	// ---------|--------- ---------|--------- ---------|---------
+
+	// ------------|------------ ------------|------------ ------------|------------
+
+	//
+	//   ----|---- ----|---- ----|----
+
+	//   --|-- --|-- --|--
+	// 1
+	// 4 - 12 - 20 ==> 8
+	// 
+	// 2
+	// 7 - 21 - 35 ==> 14
+	//
+	// 3
+	// 10 - 30 - 50
+	//
+	// 4
+	// 13
+	int midPos = sizeEach * g->maxBlock + 1;
+	int middlePos[3] = {
+		midPos,
+		midPos * 3,
+		midPos * 5
+	};
+
+	char* output = malloc(width + 1);
+	int height = g->maxBlock + 1;
+
+	Address* diskLeft = &(g->left).top;
+	Address* diskMiddle = &(g->middle).top;
+	Address* diskRight = &(g->right).top;
+
+	int heightDiskLeft = getDiskCount(&(g->left));
+	int heightDiskMiddle = getDiskCount(&(g->middle));
+	int heightDiskRight = getDiskCount(&(g->right));
+
+	int i, j;
+	for (i = height + 1; i > 0; i--)
+	{
+		*(output + width) = (char)0;
+		memset(output, ' ', width);
+		*(output + middlePos[0]) = *(output + middlePos[1]) = *(output + middlePos[2]) = POLE;
+		if (i == 0 + 1)
+		{
+			memset(output, UNDERLINE, width);
+		}
+		else if (i > 0)
+		{
+			for (j = 0; j < 3; j++)
+			{
+				Address **diskPtr = (j == 0)? &diskLeft : (j == 1)? &diskMiddle : &diskRight;
+				int *heightDisk = (j == 0)? &heightDiskLeft : (j == 1)? &heightDiskMiddle : &heightDiskRight;
+
+				if (!(*diskPtr) || !(**diskPtr)) continue;
+				if (i - 1 <= *heightDisk)
+				{
+					int blockLen = ((**diskPtr)->width * 2) + 1;
+					int pos = middlePos[j] - (**diskPtr)->width * sizeEach;
+					memset(output + pos, BLOCK, ((**diskPtr)->width * sizeEach) * 2 + 1);
+					*diskPtr = &(**diskPtr)->next;
+				}
+			}
+		}
+		printTowerStr(output, sizeEach);
+		// break;
+	}
+	free(&output);
+	#undef BLOCK
+	#undef POLE
+}
+/**
+ * [Deskripsi]
  * Menjalankan lojik dari permainan
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameRun(Game *game)
+void *gameRun(void *ptrGame)
 {
+    Game* game = (Game*) ptrGame;
     while (true)
     {
         if (game->timeLeft == 0)
@@ -319,8 +426,9 @@ void *gameRun(Game *game)
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameTimer(Game *game)
+void *gameTimer(void *ptrGame)
 {
+    Game* game = (Game*) ptrGame;
     game->timeLeft++;
     while (game->timeLeft > -1)
     {

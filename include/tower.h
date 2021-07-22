@@ -88,4 +88,12 @@ void push(Tower *tower, int width);
  */
 void pop(Tower *tower, int* width);
 
+/**
+ * [Deskripsi]
+ * Mendapatkan jumlah disk yang berada pada satu tower
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+int getDiskCount(Tower* tower)
+
 #endif

@@ -190,11 +190,26 @@ void gameBegin(Game *game);
 
 /**
  * [Deskripsi]
+ * Menampilkan output isi dari tower berdasarkan string.
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void printTowerStr(char *str, int width);
+/**
+ * [Deskripsi]
+ * Menampilkan tampilan dari tower
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void printTower(Game* g);
+
+/**
+ * [Deskripsi]
  * Menjalankan lojik dari permainan
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameRun(Game *game);
+void *gameRun(void *ptrGame);
 
 /**
  * [Deskripsi]
@@ -202,7 +217,7 @@ void *gameRun(Game *game);
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameTimer(Game *game);
+void *gameTimer(void *ptrGame);
 
 /**
  * [Deskripsi]

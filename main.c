@@ -14,19 +14,20 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "include/all.h"
 
 int main()
 {
-	// Game g;
-	// Tower t;
-	// t.top = NULL;
-	// g.right = t;
-	// g.middle = t;
-	// g.left = t;
+	Game g;
+	Tower t1, t2, t3;
+	createTower(&t1);
+	createTower(&t2);
+	createTower(&t3);
+	
 	// g.hasGameOver = false;
 	// g.score = 100;
-	// g.maxBlock = 1;
+	 g.maxBlock = 3;
 	// g.moveCount = 10;
 	// memcpy(g.playerName, "ihsan", 5);
 	// g.timeLeft = 10;
@@ -35,9 +36,16 @@ int main()
 	// saveGame(&g, 1);
 	// Game g2 = loadGame(1);
 	// g2.score = 1000;
-
+	push(&t1, 3);
+	push(&t1, 2);
+	push(&t1, 1);
+	push(&t2, 3);
+	push(&t3, 3);
+	g.right = t3;
+	g.middle = t2;
+	g.left = t1;
 	// saveHighScore(g);
 	// saveHighScore(g2);
-
+	printTower(&g);
 	return 0;
 }
