@@ -189,10 +189,14 @@ int getMinMoves(int towerLevel)
  * Memindahkan blok pada tower yang satu ke tower yang lain
  * 
  * @author
+ * Diana Fauziah
+ * 07/22/21
  */
 void moveDisk(Tower* src, Tower* dest)
 {
-
+    int width = 0;
+    pop(src, &width);
+    push(dest, width);
 }
 
 /**
