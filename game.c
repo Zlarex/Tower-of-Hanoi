@@ -23,11 +23,16 @@
  * informasi terkait dengan Game bernilai kosong
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void createGame(Game *game)
 {
-
+	game->left.top = NULL;
+	game->right.top = NULL;
+	game->middle.top = NULL;
 }
+
 
 /**
  * [Deskripsi]
