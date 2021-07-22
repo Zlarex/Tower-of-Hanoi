@@ -31,11 +31,14 @@
  * informasi terkait dengan Game bernilai kosong
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void createGame(Game *game)
-{
-
+{	
+	memset(game, 0, sizeof(Game)); //membuat semua game kosong/membentuk game baru
 }
+
 
 /**
  * [Deskripsi]
@@ -64,10 +67,22 @@ void menuLoadGame(Game *game)
  * Menu untuk membuat permainan yang dikustomisasi oleh pemain
  * 
  * @author
+ * Diana Fauziah
+ * 07/21/21
  */
 void menuPracticeGame(Game *game)
 {
-
+	printf("-----------------MENU PRACTICE GAME---------------\n\n");
+	
+	while(true){
+	system("cls");
+	printf("/t/tMasukan Banyaknya disk pada permainan : ");
+	scanf("%d", &game->towerLevel);
+		if(game->towerLevel == 1 || game->towerLevel== 2 || game->towerLevel == 3 ||game->towerLevel == 4){
+			menuLobby(&game);
+			return;
+		}	
+	}
 }
 
 /**
@@ -182,10 +197,14 @@ int getMinMoves(int towerLevel)
  * Memindahkan blok pada tower yang satu ke tower yang lain
  * 
  * @author
+ * Diana Fauziah
+ * 07/22/21
  */
 void moveDisk(Tower* src, Tower* dest)
 {
-
+    int width = 0;
+    pop(src, &width);
+    push(dest, width);
 }
 
 /**
@@ -502,4 +521,63 @@ void sortHighScore(Game *game)
 bool deleteAllHighScore()
 {
     return remove("score.dat") == 0? true : false;
+}
+
+/**
+ * [Deskripsi]
+ * Menampilkan taktik bermain Tower of hanoi
+ * @author 
+ * Diana Fauziah
+ * 07/22/21
+ */
+void ShowStep(Game *game, int choose){
+	printf("===============================================================\n");
+	printf("/t/t/t/t TAKTIK PERMAINAN TOWER OF HANOI\n");
+	printf("===============================================================\n\n");
+	
+	if (choose == 1){
+		printf("Level 1\n");
+		printf("-------------------------------------------\n");
+		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 2 piringan berarti -> 2^2 - 1 = 3 (langkah)\n");
+		printf("3. disk 1 -> tower C\n");
+		printf("4. disk 2 -> tower B\n");
+		printf("5. disk 1 -> tower B\n");
+	}else if (choose == 2){
+		printf("Level 2\n");
+		printf("-------------------------------------------\n");
+		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 3 piringan berarti -> 2^3 - 1 = 7 (langkah)\n");
+		printf("3. disk 1 -> tower C\n");
+		printf("4. disk 2 -> tower B\n");
+		printf("5. disk 1 -> tower B\n");
+		printf("6. disk 3 -> tower C\n");
+		printf("7. disk 1 -> tower A\n");
+		printf("8. disk 2 -> tower C\n");
+		printf("9. disk 1 -> tower C\n");
+	}else if (choose == 3){
+		printf("Level 3\n");
+		printf("-------------------------------------------\n");
+		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 4 piringan berarti -> 2^4 - 1 = 15 (langkah)\n");
+		printf("3. disk 1 -> tower C\n");
+		printf("....................\n");
+		printf("15. disk 1 -> tower B\n");
+	}else if (choose == 4){
+		printf("Level 4\n");
+		printf("-------------------------------------------\n");
+		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
+		printf("3. disk 1 -> tower C\n");
+		printf("....................\n");
+		printf("31. disk 1 -> tower B\n");
+	}else if (choose == 5){
+		printf("Level 5\n");
+		printf("-------------------------------------------\n");
+		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
+		printf("3. disk 1 -> tower C\n");
+		printf("....................\n");
+		printf("15. disk 1 -> tower B\n");
+	}
 }
