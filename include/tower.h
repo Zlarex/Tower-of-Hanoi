@@ -94,6 +94,6 @@ void pop(Tower *tower, int* width);
  * 
  * @author Ihsan Fauzan Hanif
  */
-int getDiskCount(Tower* tower)
+int getDiskCount(Tower* tower);
 
 #endif

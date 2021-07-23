@@ -10,20 +10,18 @@
  * Implementasi kode program dari struktur data pada file game.h
  */
 
+#include <conio.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
-
-#ifdef _WIN32
-    #include <windows.h>
-#else
-    #include <unistd.h>
-#endif
+#include <windows.h>
+#include <unistd.h>
 
 #include "include/all.h"
 #define ESC 27		//klik esc
+#define ENTER 13
 
 /**
  * [Deskripsi]
@@ -39,6 +37,60 @@ void createGame(Game *game)
 	memset(game, 0, sizeof(Game)); //membuat semua game kosong/membentuk game baru
 }
 
+/**
+ * [Deskripsi]
+ * Inisialisasi sistem game dan threading
+ * 
+ * @author
+ */
+void createRunner(Runner *runner)
+{
+	memset(runner, 0, sizeof(*runner));
+}
+
+/**
+ * [Deskripsi]
+ * Menu utama dalam permainan
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuMain(Game *game)
+{
+	bool showInvalidMsg = false;
+	void (*menuSelect[6])(Game*) = {
+		menuPlayGame,
+		menuLoadGame,
+		menuPracticeGame,
+		menuHighScore,
+		menuCredits,
+		menuExit
+	};
+	while (true)
+	{
+		system("cls");
+		printf("-------------------------------------------------\n");
+		printf("\t\tTower of Hanoi\n");
+		printf("-------------------------------------------------\n");
+		printf("\n[1]. Permainan Baru\n");
+		printf("[2]. Lanjutkan Permainan\n");
+		printf("[3]. Permainan Kustom\n");
+		printf("[4]. Skor Tertinggi\n");
+		printf("[5]. Kredit\n");
+		printf("[6]. Keluar\n");
+
+		if (showInvalidMsg)
+		{
+			printf("\nInput tidak valid!\n");
+			showInvalidMsg = false;
+		}
+		printf("\nInput: ");
+		int input = 0;
+		scanf("%d", &input);
+		input--;
+		if (input < 0 || input > 5) showInvalidMsg = true;
+		else return menuSelect[input](game);
+	}
+}
 
 /**
  * [Deskripsi]
@@ -161,6 +213,61 @@ void menuLobby(Game *game)
 
 /**
  * [Deskripsi]
+ * Menu untuk memulai permainan baru
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuPauseGame(Game *game)
+{
+	game->isPaused = true;
+	system("cls");
+	printf("-------------------------------------------------\n");
+	printf("\t\tTower of Hanoi\n");
+	printf("-------------------------------------------------\n\n\n");
+	printTower(game);
+	printf("\n[GAME DIJEDA]\n");
+	if (game->mode == ORIGINAL) printf("\nWaktu tersisa: %d detik", game->timeLeft);	
+	printf("\nTekan 'Enter' untuk melanjutkan");
+	while (true)
+	{
+		fflush(stdin);
+		char input = getch();
+		if ((int)input == ENTER)
+		{
+			game->isPaused = false;
+			break;
+		}
+		else if ((int)input == ESC)
+		{
+			game->state = LOSE;
+			game->score = 0;
+			break;
+		}
+	}
+}
+
+/**
+ * [Deskripsi]
+ * Menu untuk memulai permainan baru
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuShowStep(Game *game)
+{
+	system("cls");
+	ShowStep(game, game->towerLevel);
+	printf("\n");
+	printf("\nTekan 'Enter' untuk melanjutkan");
+	while (true)
+	{
+		fflush(stdin);
+		char input = getch();
+		if ((int)input == ENTER) break;
+	}
+}
+
+/**
+ * [Deskripsi]
  * Mendapatkan disk maksimal yang bisa dimasukkan berdasarkan level dari tower 
  * 
  * @author
@@ -189,7 +296,7 @@ int getMaxTime(int towerLevel)
  */
 int getMinMoves(int towerLevel)
 {
-
+	return 1 << towerLevel - 1;
 }
 
 /**
@@ -288,18 +395,89 @@ bool deleteGame(int index)
  * 
  * @author Ihsan Fauzan Hanif
  */
-void gameBegin(Game *game)
+void gameEntry(Game *game)
 {
     game->hasGameOver = false;
     game->isPaused = false;
-    game->maxBlock = 3;
-    game->timeLeft = 10;
+    game->timeLeft = 	10;
+
+	int i;
+	for (i = game->maxBlock; i > 0; i--) push(&game->left, i);
 
     pthread_t thGameRun, thGameTimer;
-    pthread_create(&thGameRun, NULL, gameRun, game);
-    pthread_create(&thGameTimer, NULL, gameTimer, game);
+	Runner runner;
+	createRunner(&runner);
+	runner.game = &game;
+	runner.threadGame = &thGameRun;
+	runner.threadTimer = &thGameTimer;
+
+    pthread_create(&thGameRun, NULL, gameRun, &runner);
+    pthread_create(&thGameTimer, NULL, gameTimer, &runner);
     pthread_join(thGameRun, NULL);
     pthread_join(thGameTimer, NULL);
+
+	printf("\n[Permainan Berakhir]\n\n");
+	printf(game->state == WIN? "Anda Menang!\n" : "Anda Kalah!\n");
+	switch(game->state)
+	{
+		case WIN:
+			if (game->mode == ORIGINAL)
+			{
+				game->score += (game->towerLevel * 10) + game->timeLeft;
+				printf("Skor Anda: %d\n", game->score);
+				if (game->towerLevel < 5)
+				{
+					saveGame(game, 0);
+					printf("Mainkan level berikutnya? [Y/N]");
+					char input = (char)0;
+					scanf("%c", &input);
+					fflush(stdin);
+
+					if (input == 'Y' || input == 'y')
+					{
+						game->towerLevel++;
+						return menuLobby(game);
+					}
+				}
+				else
+				{
+					printf("Selamat! Anda telah menyelesaikan semua level\n");
+					printf("Tekan tombol apapun untuk melanjutkan");
+					getch();
+					fflush(stdin);
+				}
+			}
+			else
+			{
+				printf("Ulangi permainan? [Y/N]");
+				char input = (char)0;
+				scanf("%c", &input);
+				fflush(stdin);
+
+				if (input == 'Y' || input == 'y') return menuLobby(game);
+			}
+			return menuMain(game);
+		case LOSE:
+			if (game->mode == ORIGINAL)
+			{
+				printf("Skor Anda: %d\n", game->score);
+				deleteGame(game->index);
+				printf("Permainan tidak dapat diulangi.\n");
+				printf("Tekan tombol apapun untuk melanjutkan");
+				getch();
+				fflush(stdin);
+			}
+			else
+			{
+				printf("Ulangi permainan? [Y/N]");
+				char input = (char)0;
+				scanf("%c", &input);
+				fflush(stdin);
+
+				if (input == 'Y' || input == 'y') return menuLobby(game);
+			}
+			return menuMain(game);
+	}
 }
 
 /**
@@ -313,7 +491,6 @@ void printTowerStr(char *str, int width)
 	int i;
 	for (i = 0; i < strlen(str); i++)
 	{
-		if (i == 0) continue;
 		printf("%c", (int)*(str + i));
 	}
 	printf("\n");
@@ -327,40 +504,35 @@ void printTowerStr(char *str, int width)
  */
 void printTower(Game* g)
 {
-	#define BLOCK 219
-	#define UNDERLINE 196
-	#define POLE 179
+	#define UI_BLOCK 219
+	#define UI_GROUND 196
+	#define UI_POLE 179
 	int sizeEach = 2;
-	int width = 3 + 3 + (g->maxBlock * (2 * sizeEach) * 3); // tower + padding + disk len (2 = tambahan kiri-kanan, 3 = banyak tower)
-
-	//     --|--         --|--         --|--
-	//   ----|----     ----|----     ----|----
-	// ------|------ ------|------ ------|------
-	
-	// ---------|--------- ---------|--------- ---------|---------
-
-	// ------------|------------ ------------|------------ ------------|------------
-
-	//
-	//   ----|---- ----|---- ----|----
-
-	//   --|-- --|-- --|--
-	// 1
-	// 4 - 12 - 20 ==> 8
+	int width = 3 + 3 + (g->maxBlock * (2 * sizeEach) * 3); // tower + padding + disk len (2 = tambahan kiri-kanan, 3 = banyak tower) 
+	// posisi tengah dari tiang (3 disk):
 	// 
-	// 2
-	// 7 - 21 - 35 ==> 14
+	// lebar: 1
+	// ---|--- ---|--- ---|---
+	// 4 - 12 - 20
+	// 
+	// lebar: 2
+	// ------|------ ------|------ ------|------
+	// 7 - 21 - 35
 	//
-	// 3
+	// lebar: 3
+	// ---------|--------- ---------|--------- ---------|---------
 	// 10 - 30 - 50
 	//
-	// 4
+	// lebar: 4
+	// ------------|------------
 	// 13
+	//
+	// rumus: sizeEach * maxBlock + 1
 	int midPos = sizeEach * g->maxBlock + 1;
 	int middlePos[3] = {
-		midPos,
-		midPos * 3,
-		midPos * 5
+		midPos - 1,
+		midPos * 3 - 1,
+		midPos * 5 - 1
 	};
 
 	char* output = malloc(width + 1);
@@ -379,13 +551,16 @@ void printTower(Game* g)
 	{
 		*(output + width) = (char)0;
 		memset(output, ' ', width);
-		*(output + middlePos[0]) = *(output + middlePos[1]) = *(output + middlePos[2]) = POLE;
 		if (i == 0 + 1)
 		{
-			memset(output, UNDERLINE, width);
+			memset(output, UI_GROUND, width);
+			*(output + middlePos[0]) = '1';
+			*(output + middlePos[1]) = '2';
+			*(output + middlePos[2]) = '3';
 		}
 		else if (i > 0)
 		{
+			*(output + middlePos[0]) = *(output + middlePos[1]) = *(output + middlePos[2]) = UI_POLE;
 			for (j = 0; j < 3; j++)
 			{
 				Address **diskPtr = (j == 0)? &diskLeft : (j == 1)? &diskMiddle : &diskRight;
@@ -396,7 +571,7 @@ void printTower(Game* g)
 				{
 					int blockLen = ((**diskPtr)->width * 2) + 1;
 					int pos = middlePos[j] - (**diskPtr)->width * sizeEach;
-					memset(output + pos, BLOCK, ((**diskPtr)->width * sizeEach) * 2 + 1);
+					memset(output + pos, UI_BLOCK, ((**diskPtr)->width * sizeEach) * 2 + 1);
 					*diskPtr = &(**diskPtr)->next;
 				}
 			}
@@ -405,8 +580,9 @@ void printTower(Game* g)
 		// break;
 	}
 	free(&output);
-	#undef BLOCK
-	#undef POLE
+	#undef UI_BLOCK
+	#undef UI_POLE
+	#undef UI_GROUND
 }
 /**
  * [Deskripsi]
@@ -414,26 +590,84 @@ void printTower(Game* g)
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameRun(void *ptrGame)
+void *gameRun(void *argsData)
 {
-    Game* game = (Game*) ptrGame;
+	bool showInvalidMsg = false;
+	Runner* runner = (Runner*)argsData;
+    Game* game = *(runner->game);
+	game->state = NONE;
     while (true)
     {
-        if (game->timeLeft == 0)
-        {
-            game->state = LOSE;
-            break;
-        }
-        if (game->isPaused)
-        {
-            // pause game
-            printf("Permainan Dijeda\n");
-            system("pause");
-        }
+		system("cls");
+		printf("-------------------------------------------------\n");
+		printf("\t\tTower of Hanoi\n");
+		printf("-------------------------------------------------\n\n\n");
+		printTower(game);
+        if (game->timeLeft == 0 && game->mode == ORIGINAL) game->state = LOSE;
+		
+		if (game->state != NONE) break;
+        if (game->isPaused) menuPauseGame(game);
         else
         {
-            showTowers();
-            
+			printf("\n[P] Pause Game\n");
+			if (game->mode == PRACTICE)
+			{
+				printf("[H] Show hint\n");
+				printf("[Q] Menyerah\n");
+			}
+			printf("Masukkan 2 nomor Tower untuk memindahkan Disk\n");
+			if (showInvalidMsg)
+			{
+				printf("\nInput tidak valid!\n");
+				showInvalidMsg = false;
+			}
+			printf("\nInput: ");
+			char input[10] = {'\000'};
+			fgets(input, 10, stdin);
+			fflush(stdin);
+
+			input[strlen(input) - 1] = (char)0;
+			if (game->mode == PRACTICE)
+			{
+				if (strcmp(input, "P") == 0 || strcmp(input, "p") == 0)
+				{
+					game->isPaused = true;
+					continue;
+				}
+				if (strcmp(input, "H") == 0 || strcmp(input, "h") == 0)
+				{
+					menuShowStep(game);
+					continue;
+				}
+				if (strcmp(input, "Q") == 0 || strcmp(input, "q") == 0)
+				{
+					game->state = LOSE;
+					continue;
+				}
+			}
+
+			char *pSrc = strtok(input, " ");
+			char *pDest = strtok(NULL, " ");
+
+			int src = atoi(pSrc);
+			int dest = atoi(pDest);
+			if (src < 1 || src > 3 || dest < 1 || dest > 3)
+			{
+				showInvalidMsg = true;
+				continue;
+			}
+
+			Tower *from = src == 1? &game->left : src == 2? &game->middle : &game->right;
+			Tower *to = dest == 1? &game->left : dest == 2? &game->middle : &game->right;
+
+			int topSrc = from->top? from->top->width : 0;
+			int topDest = to->top? to->top->width : 0;
+			if (topSrc > 0 && topSrc < topDest || topDest == 0 && topSrc != topDest)
+			{
+				moveDisk(from, to);
+				if (getDiskCount(&game->right) == game->maxBlock) game->state = WIN;
+			}
+			else showInvalidMsg = true;
         }
     }
     return NULL;
@@ -445,14 +679,16 @@ void *gameRun(void *ptrGame)
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameTimer(void *ptrGame)
+void *gameTimer(void *argsData)
 {
-    Game* game = (Game*) ptrGame;
+	Runner *runner = (Runner*) argsData;
+	Game* game = *(runner->game);
+
     game->timeLeft++;
-    while (game->timeLeft > -1)
+    while (game->timeLeft > -1 && game->state == NONE)
     {
         if (!game->isPaused && game->mode == ORIGINAL) game->timeLeft--;
-        Sleep(1);
+        sleep(1);
     }
     return NULL;
 }
@@ -580,4 +816,16 @@ void ShowStep(Game *game, int choose){
 		printf("....................\n");
 		printf("15. disk 1 -> tower B\n");
 	}
+}
+
+/**
+ * [Deskripsi]
+ * Inisialisasi pengaturan sistem pada game
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void initializeGameSystem(Game* game)
+{
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	createGame(game);
 }

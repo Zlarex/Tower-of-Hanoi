@@ -15,6 +15,7 @@
 #define __GAME_HEADER__
 
 #include <stdbool.h>
+#include <pthread.h>
 #include "all.h"
 
 #define MAX_LEVEL 5
@@ -39,6 +40,7 @@ typedef struct _Game {
     Tower right;
     Tower middle;
     Tower left;
+    int index;
     int moveCount;
     int towerLevel;
     int maxBlock;
@@ -51,6 +53,12 @@ typedef struct _Game {
     char playerName[50];
 } Game;
 
+typedef struct _Runner {
+    Game** game;
+    pthread_t* threadGame;
+    pthread_t* threadTimer;
+} Runner;
+
 /**
  * [Deskripsi]
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
@@ -59,6 +67,22 @@ typedef struct _Game {
  * @author
  */
 void createGame(Game *game);
+
+/**
+ * [Deskripsi]
+ * Inisialisasi sistem game dan threading
+ * 
+ * @author
+ */
+void createRunner(Runner *runner);
+
+/**
+ * [Deskripsi]
+ * Menu utama dalam permainan
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuMain(Game *game);
 
 /**
  * [Deskripsi]
@@ -115,6 +139,22 @@ void menuExit(Game *game);
  * @author
  */
 void menuLobby(Game *game);
+
+/**
+ * [Deskripsi]
+ * Menu untuk memulai permainan baru
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuPauseGame(Game *game);
+
+/**
+ * [Deskripsi]
+ * Menu untuk memulai permainan baru
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void menuShowStep(Game *game);
 
 /**
  * [Deskripsi]
@@ -186,7 +226,7 @@ bool deleteGame(int index);
  * 
  * @author Ihsan Fauzan Hanif
  */
-void gameBegin(Game *game);
+void gameEntry(Game *game);
 
 /**
  * [Deskripsi]
@@ -209,7 +249,7 @@ void printTower(Game* g);
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameRun(void *ptrGame);
+void *gameRun(void *argsData);
 
 /**
  * [Deskripsi]
@@ -217,7 +257,7 @@ void *gameRun(void *ptrGame);
  * 
  * @author Ihsan Fauzan Hanif
  */
-void *gameTimer(void *ptrGame);
+void *gameTimer(void *argsData);
 
 /**
  * [Deskripsi]
@@ -252,5 +292,13 @@ bool deleteAllHighScore();
  * 07/22/21
  */
 void ShowStep(Game *game, int choose);
+
+/**
+ * [Deskripsi]
+ * Inisialisasi pengaturan sistem pada game
+ * 
+ * @author Ihsan Fauzan Hanif
+ */
+void initializeGameSystem(Game* game);
 
 #endif
