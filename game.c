@@ -71,7 +71,7 @@ void menuPracticeGame(Game *game)
 	printf("\t\tMasukan Banyaknya disk pada permainan : ");
 	scanf("%d", &game->towerLevel);
 		if(game->towerLevel == 1 || game->towerLevel== 2 || game->towerLevel == 3 ||game->towerLevel == 4){
-			menuLobby(&game);
+			menuLobby(game);
 			return;
 		}	
 	}
