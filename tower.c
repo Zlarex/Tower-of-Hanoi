@@ -36,7 +36,7 @@ void createTower(Tower *tower)
  */
 void createDisk(Address disk, int width)
 {
-	disk.width = width;
+	disk->width = width;
 	disk->next = NULL;
 }
 
@@ -46,7 +46,7 @@ void createDisk(Address disk, int width)
  * 
  * @author
  */
-Address allocate(Address disk, int width)
+Address allocate(int width)
 {
 
 }
@@ -86,9 +86,9 @@ bool isEmpty(Tower tower)
  */
 void push(Tower *tower, int width)
 {
-	Address p,q;
+	Address p;
 	
-	p = allocate(tower, width);
+	p = allocate(width);
 	if (isEmpty(*tower)){	//tower kosong
 		tower->top = p;
 	}else{					//tower ada isi
