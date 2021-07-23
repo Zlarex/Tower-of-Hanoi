@@ -46,7 +46,7 @@ void createTower(Tower *tower);
  * 
  * @author
  */
-void createDisk(Address disk, int width);
+void createDisk(int width);
 
 /**
  * [Deskripsi]
