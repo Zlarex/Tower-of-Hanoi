@@ -70,13 +70,13 @@ void menuLoadGame(Game *game)
  * Diana Fauziah
  * 07/21/21
  */
-void menuPracticeGame(Game game)
+void menuPracticeGame(Game *game)
 {
 	printf("-----------------MENU PRACTICE GAME---------------\n\n");
 	
 	while(true){
 	system("cls");
-	printf("/t/tMasukan Banyaknya disk pada permainan : ");
+	printf("\t\tMasukan Banyaknya disk pada permainan : ");
 	scanf("%d", &game->towerLevel);
 		if(game->towerLevel == 1 || game->towerLevel== 2 || game->towerLevel == 3 ||game->towerLevel == 4){
 			menuLobby(&game);
