@@ -40,22 +40,25 @@ void createGame(Game *game)
  * [Deskripsi]
  * Menu untuk memulai permainan baru
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void menuPlayGame(Game *game)
 {
-
+	char nama;
+	printf ("Silakan, masukan nama anda : ");
+	scanf ("%c", &nama);
+	gameBegin ();
 }
 
 /**
  * [Deskripsi]
  * Menu untuk memuat permainan lama (yang telah tersimpan)
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
-void menuLoadGame(Game *game)
-{
-
+void menuLoadGame(Game *game) {
+	printf ("Silakan melanjutkan permainanmu :) ");
+	loadGame ();
 }
 
 /**
@@ -78,6 +81,21 @@ void menuPracticeGame(Game *game)
 void menuHighScore(Game *game)
 {
 
+	sortHighScore();
+   
+    FILE *tampil;
+    struct saveHighScore data;
+    
+    tampil = fopen("KumpulanSkor.txt", "rb");
+    
+    while (!feof(tampil)) {
+        fscanf(tampil, "%s - %d\n", &data.NamaPemain, &data.skor);
+        printf("Papan Peringkat\n");
+        printf("%s - %d\n\n", data.NamaPemain, data.skor);
+	}
+    
+	system("pause"); 
+	//harusnya ada void menu utama 
 }
 
 /**
@@ -106,18 +124,26 @@ void menuExit(Game *game)
  * [Deskripsi]
  * Menu sebagai tempat berhenti sesaat sebelum permainan dimulai
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
-void menuLobby(Game *game)
-{
-
+void menuLobby(Game *game) {
+	int pilihan;
+	printf ("1. Lanjutkan Permainan");
+	printf ("2. Keluar Permainan");
+	printf ("Masukkan pilihan Anda : ");
+	scanf ("%d", &pilihan);
+	switch (pilihan) {
+		case '1' : gameRun(); break;
+		case '2' : saveGame (); break; 
+		default : printf ("Mohon maaf Anda salah dalam input nilai :( ");
+	}
 }
 
 /**
  * [Deskripsi]
  * Mendapatkan disk maksimal yang bisa dimasukkan berdasarkan level dari tower 
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 int getMaxDisk(int towerLevel)
 {
