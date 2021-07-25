@@ -17,55 +17,41 @@
 #include "include/all.h"
 
 /**
- * [Deskripsi]
  * Inisialisasi tower, bertujuan untuk mengeset agar isi dari tower kosong
- * 
  * @author M Aziz Taufiqurrahman
  */
 void createTower(Tower *tower){
 	(*tower).top = NULL;
 }
-
 /**
- * [Deskripsi]
  * Inisialisasi disk, bertujuan untuk mengatur agar disk memiliki isi (panjang) sesuai
  * dengan width
- * 
- * @author
+ * @author Diana Fauziah
  */
 void createDisk(Address disk, int width)
 {
 	disk->width = width;
 	disk->next = NULL;
 }
-
 /**
- * [Deskripsi]
  * Membuat disk baru dengan panjang disk yang telah ditentukan
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 Address allocate(int width)
 {
 
 }
-
 /**
- * [Deskripsi]
  * Membebaskan memori yang dipesan oleh pointer pada disk
- * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 void deallocate(Address disk)
 {
     if (disk) free(disk);
 }
-
 /**
- * [Deskripsi]
  * Mengecek apakah tower memiliki disk atau tidak
- * 
- * @author
+ * @author Diana Fauziah
  */
 bool isEmpty(Tower tower)
 {
@@ -75,13 +61,9 @@ bool isEmpty(Tower tower)
 		return false;
 	}
 }
-
-
 /**
- * [Deskripsi]
  * Memasukkan disk pada tower, dengan panjang disk yang diminta oleh width
- * 
- * @author
+ * @author Diana Fauziah
  */
 void push(Tower *tower, int width)
 {
@@ -96,11 +78,8 @@ void push(Tower *tower, int width)
 	}
 	
 }
-
 /**
- * [Deskripsi]
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
- * 
  * @author M Aziz Taufiqurrahman
  */
 void pop(Tower *tower, int* width)
@@ -120,11 +99,8 @@ void pop(Tower *tower, int* width)
 			printf ("Disk udah kosong");
 		}
 }
-
 /**
- * [Deskripsi]
  * Mendapatkan jumlah disk yang berada pada satu tower
- * 
  * @author Ihsan Fauzan Hanif
  */
 int getDiskCount(Tower* tower)

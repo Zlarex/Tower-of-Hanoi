@@ -18,16 +18,14 @@
 #include <pthread.h>
 #include <windows.h>
 #include <unistd.h>
-
 #include "include/all.h"
+
 #define ESC 27		//klik esc
 #define ENTER 13
 
 /**
- * [Deskripsi]
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
  * informasi terkait dengan Game bernilai kosong
- * 
  * @author
  * Diana Fauziah
  * 07/21/21
@@ -36,22 +34,16 @@ void createGame(Game *game)
 {	
 	memset(game, 0, sizeof(Game)); //membuat semua game kosong/membentuk game baru
 }
-
 /**
- * [Deskripsi]
  * Inisialisasi sistem game dan threading
- * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 void createRunner(Runner *runner)
 {
 	memset(runner, 0, sizeof(*runner));
 }
-
 /**
- * [Deskripsi]
  * Menu utama dalam permainan
- * 
  * @author Ihsan Fauzan Hanif
  */
 void menuMain(Game *game)
@@ -91,11 +83,8 @@ void menuMain(Game *game)
 		else return menuSelect[input](game);
 	}
 }
-
 /**
- * [Deskripsi]
  * Menu untuk memulai permainan baru
- * 
  * @author M Aziz Taufiqurrahman
  */
 void menuPlayGame(Game *game)
@@ -105,22 +94,16 @@ void menuPlayGame(Game *game)
 	scanf ("%c", &nama);
 	gameBegin ();
 }
-
 /**
- * [Deskripsi]
  * Menu untuk memuat permainan lama (yang telah tersimpan)
- * 
  * @author M Aziz Taufiqurrahman
  */
 void menuLoadGame(Game *game) {
 	printf ("Silakan melanjutkan permainanmu :) ");
 	loadGame ();
 }
-
 /**
- * [Deskripsi]
  * Menu untuk membuat permainan yang dikustomisasi oleh pemain
- * 
  * @author
  * Diana Fauziah
  * 07/21/21
@@ -139,11 +122,8 @@ void menuPracticeGame(Game *game)
 		}	
 	}
 }
-
 /**
- * [Deskripsi]
  * Menu untuk menampilkan top 10 pemain dengan skor tertinggi
- * 
  * @author
  */
 void menuHighScore(Game *game)
@@ -165,11 +145,8 @@ void menuHighScore(Game *game)
 	system("pause"); 
 	//harusnya ada void menu utama 
 }
-
 /**
- * [Deskripsi]
  * Menu untuk menampilkan informasi mengenai game dan/atau developer
- * 
  * @author
  * Diana Fauziah
  * 07/21/21
@@ -192,11 +169,8 @@ void menuCredits(Game *game)
 	printf("|M Aziz Taufiqurrahman - (deskripsi diri)			   |\n");
 	printf("--------------------------------------------------------\n");
 }
-
 /**
- * [Deskripsi]
  * Menu untuk keluar dari program
- * 
  * @author
  * Diana Fauziah
  * 07/21/21
@@ -217,11 +191,8 @@ void menuExit(Game *game)
         }
     } while(ch != ESC);
 }
-
 /**
- * [Deskripsi]
  * Menu sebagai tempat berhenti sesaat sebelum permainan dimulai
- * 
  * @author M Aziz Taufiqurrahman
  */
 void menuLobby(Game *game) {
@@ -231,16 +202,13 @@ void menuLobby(Game *game) {
 	printf ("Masukkan pilihan Anda : ");
 	scanf ("%d", &pilihan);
 	switch (pilihan) {
-		case '1' : gameRun(); break;
-		case '2' : saveGame (); break; 
+		// case '1' : gameRun(); break;
+		// case '2' : saveGame (); break; 
 		default : printf ("Mohon maaf Anda salah dalam input nilai :( ");
 	}
 }
-
 /**
- * [Deskripsi]
  * Menu untuk memulai permainan baru
- * 
  * @author Ihsan Fauzan Hanif
  */
 void menuPauseGame(Game *game)
@@ -271,11 +239,8 @@ void menuPauseGame(Game *game)
 		}
 	}
 }
-
 /**
- * [Deskripsi]
  * Menu untuk memulai permainan baru
- * 
  * @author Ihsan Fauzan Hanif
  */
 void menuShowStep(Game *game)
@@ -291,11 +256,8 @@ void menuShowStep(Game *game)
 		if ((int)input == ENTER) break;
 	}
 }
-
 /**
- * [Deskripsi]
  * Mendapatkan disk maksimal yang bisa dimasukkan berdasarkan level dari tower 
- * 
  * @author M Aziz Taufiqurrahman
  */
 int getMaxDisk(int towerLevel) {
@@ -307,11 +269,8 @@ int getMaxDisk(int towerLevel) {
 		case 5 : return 5; break;
 	}
 }
-
 /**
- * [Deskripsi]
  * Mendapatkan waktu maksimal yang bisa digunakan untuk bermain berdasarkan level dari tower
- * 
  * @author
  */
 int getMaxTime(int towerLevel) {
@@ -323,22 +282,16 @@ int getMaxTime(int towerLevel) {
 		case 5 : return 90; break;
 	}
 }
-
 /**
- * [Deskripsi]
  * Mendapatkan pergerakan minimal yang bisa dilakukan untuk menyelesaikan permainan
- * 
  * @author
  */
 int getMinMoves(int towerLevel)
 {
 	return 1 << towerLevel - 1;
 }
-
 /**
- * [Deskripsi]
  * Memindahkan blok pada tower yang satu ke tower yang lain
- * 
  * @author
  * Diana Fauziah
  * 07/22/21
@@ -349,11 +302,8 @@ void moveDisk(Tower* src, Tower* dest)
     pop(src, &width);
     push(dest, width);
 }
-
 /**
- * [Deskripsi]
  * Menyimpan game dengan posisi penyimpanan berdasarkan index
- * 
  * @author Ihsan Fauzan Hanif
  */
 bool saveGame(Game *game, int index)
@@ -364,7 +314,6 @@ bool saveGame(Game *game, int index)
     memset(gameData, 0, maxSize);
     loadAllSaveGame(gameData, maxSize);
     
-    index--; // index penyimpanan dimulai dari nol
     memcpy(gameData + (index * sizeof(*game)), game, sizeof(*game));
     FILE *file = fopen("save.dat", "wb");
     if (!file)
@@ -378,24 +327,18 @@ bool saveGame(Game *game, int index)
     free(gameData);
     return retVal;
 }
-
 /**
- * [Deskripsi]
  * Memuat seluruh data permainan tersimpan
- * 
  * @author Ihsan Fauzan Hanif
  */
-void loadAllSaveGame(char* result, int max)
+void loadAllSaveGame(char* result, int memorySize)
 {
     FILE *file = fopen("save.dat", "rb");
-    if (file) fread(result, max, 1, file);
+    if (file) fread(result, memorySize, 1, file);
     fclose(file);
 }
-
 /**
- * [Deskripsi]
  * Memuat game yang terdapat pada save game berdasarkan index
- * 
  * @author Ihsan Fauzan Hanif
  */
 Game loadGame(int index)
@@ -404,18 +347,14 @@ Game loadGame(int index)
     memset(&retVal, 0, sizeof(retVal));
     int maxSize = sizeof(retVal) * MAX_SAVED_GAME;
     char *gameData = malloc(maxSize);
-    
-    index--;
+
     loadAllSaveGame(gameData, maxSize);
     memcpy(&retVal + (index * sizeof(retVal)), gameData, sizeof(retVal));
     free(gameData);
     return retVal;
 }
-
 /**
- * [Deskripsi]
  * Menghapus data game yang telah tersimpan
- * 
  * @author Ihsan Fauzan Hanif
  */
 bool deleteGame(int index)
@@ -424,21 +363,42 @@ bool deleteGame(int index)
     memset(&g, 0, sizeof(Game));
     return saveGame(&g, index);
 }
-
 /**
- * [Deskripsi]
+ * Menampilkan daftar permainan tersimpan
+ * @author Ihsan Fauzan Hanif
+ */
+void printSaveGame()
+{
+	Game sgData[MAX_SAVED_GAME] = {0};
+	Game game;
+
+	int maxSize = sizeof(Game) * MAX_SAVED_GAME;
+    char *gameData = malloc(maxSize);
+	memset(gameData, 0, maxSize);
+	loadAllSaveGame(gameData, maxSize);
+	memcpy(sgData, gameData, maxSize);
+
+	int i;
+	for (i = 0; i < MAX_SAVED_GAME; i++)
+	{
+		game = sgData[i];
+		if (game.index == 0) printf("%02d. [Kosong]\n", i + 1);
+		else printf("%02d. %s - Level: %d - Skor: %d\n", i + 1, game.playerName, game.towerLevel, game.score);
+	}
+}
+/**
  * Titik masuk dari permainan
- * 
  * @author Ihsan Fauzan Hanif
  */
 void gameEntry(Game *game)
 {
     game->hasGameOver = false;
     game->isPaused = false;
-    game->timeLeft = 	10;
+    game->timeLeft = getMaxTime(game->towerLevel);
+	game->maxDisk = getMaxDisk(game->towerLevel);
 
 	int i;
-	for (i = game->maxBlock; i > 0; i--) push(&game->left, i);
+	for (i = game->maxDisk; i > 0; i--) push(&game->left, i);
 
     pthread_t thGameRun, thGameTimer;
 	Runner runner;
@@ -515,11 +475,8 @@ void gameEntry(Game *game)
 			return menuMain(game);
 	}
 }
-
 /**
- * [Deskripsi]
  * Menampilkan output isi dari tower berdasarkan string.
- * 
  * @author Ihsan Fauzan Hanif
  */
 void printTowerStr(char *str, int width)
@@ -531,11 +488,8 @@ void printTowerStr(char *str, int width)
 	}
 	printf("\n");
 }
-
 /**
- * [Deskripsi]
  * Menampilkan tampilan dari tower
- * 
  * @author Ihsan Fauzan Hanif
  */
 void printTower(Game* g)
@@ -544,7 +498,7 @@ void printTower(Game* g)
 	#define UI_GROUND 196
 	#define UI_POLE 179
 	int sizeEach = 2;
-	int width = 3 + 3 + (g->maxBlock * (2 * sizeEach) * 3); // tower + padding + disk len (2 = tambahan kiri-kanan, 3 = banyak tower) 
+	int width = 3 + 3 + (g->maxDisk * (2 * sizeEach) * 3); // tower + padding + disk len (2 = tambahan kiri-kanan, 3 = banyak tower) 
 	// posisi tengah dari tiang (3 disk):
 	// 
 	// lebar: 1
@@ -563,8 +517,8 @@ void printTower(Game* g)
 	// ------------|------------
 	// 13
 	//
-	// rumus: sizeEach * maxBlock + 1
-	int midPos = sizeEach * g->maxBlock + 1;
+	// rumus: sizeEach * maxDisk + 1
+	int midPos = sizeEach * g->maxDisk + 1;
 	int middlePos[3] = {
 		midPos - 1,
 		midPos * 3 - 1,
@@ -572,7 +526,7 @@ void printTower(Game* g)
 	};
 
 	char* output = malloc(width + 1);
-	int height = g->maxBlock + 1;
+	int height = g->maxDisk + 1;
 
 	Address* diskLeft = &(g->left).top;
 	Address* diskMiddle = &(g->middle).top;
@@ -619,11 +573,8 @@ void printTower(Game* g)
 	#undef UI_BLOCK
 	#undef UI_POLE
 	#undef UI_GROUND
-}
-/**
- * [Deskripsi]
+}/**
  * Menjalankan lojik dari permainan
- * 
  * @author Ihsan Fauzan Hanif
  */
 void *gameRun(void *argsData)
@@ -701,18 +652,15 @@ void *gameRun(void *argsData)
 			if (topSrc > 0 && topSrc < topDest || topDest == 0 && topSrc != topDest)
 			{
 				moveDisk(from, to);
-				if (getDiskCount(&game->right) == game->maxBlock) game->state = WIN;
+				if (getDiskCount(&game->right) == game->maxDisk) game->state = WIN;
 			}
 			else showInvalidMsg = true;
         }
     }
     return NULL;
 }
-
 /**
- * [Deskripsi]
  * Menjalankan timer dari permainan
- * 
  * @author Ihsan Fauzan Hanif
  */
 void *gameTimer(void *argsData)
@@ -728,19 +676,14 @@ void *gameTimer(void *argsData)
     }
     return NULL;
 }
-
 /**
- * [Deskripsi]
  * Menyimpan skor dari permainan
- * 
  * @author Ihsan Fauzan Hanif
  */
 void saveHighScore(Game game)
 {
     int maxSize = sizeof(game) * MAX_SAVED_SCORE;
-    Game HSdata[MAX_SAVED_SCORE];
-    memset(&HSdata, 0, sizeof(HSdata));
-    
+    Game HSdata[MAX_SAVED_SCORE] = {0};
     FILE *file = fopen("score.dat", "rb");
     if (file) fread(HSdata, maxSize, 1, file);
     fclose(file);
@@ -754,11 +697,8 @@ void saveHighScore(Game game)
     int code = fwrite(HSdata, sizeof(HSdata), 1, file);
     fclose(file);
 }
-
 /**
- * [Deskripsi]
  * Menyortir isi dari file highscore
- * 
  * @author Ihsan Fauzan Hanif
  */
 void sortHighScore(Game *game)
@@ -783,22 +723,16 @@ void sortHighScore(Game *game)
         }
     }
 }
-
 /**
- * [Deskripsi]
  * Menghapus semua skor yang tersimpan
- * 
  * @author Ihsan Fauzan Hanif
  */
 bool deleteAllHighScore()
 {
     return remove("score.dat") == 0? true : false;
 }
-
 /**
- * [Deskripsi]
- * Menampilkan taktik bermain Tower of hanoi
- * @author 
+ * Menampilkan taktik bermain Tower of hanoi@author 
  * Diana Fauziah
  * 07/22/21
  */
@@ -853,11 +787,28 @@ void ShowStep(Game *game, int choose){
 		printf("15. disk 1 -> tower B\n");
 	}
 }
-
 /**
- * [Deskripsi]
+ * Menampilkan seluruh daftar high score
+ * @author Ihsan Fauzan Hanif
+ */
+void printAllHighScore()
+{
+	int maxSize = sizeof(Game) * MAX_SAVED_SCORE;
+    Game HSdata[MAX_SAVED_SCORE] = {0};
+	Game game;
+    FILE *file = fopen("score.dat", "rb");
+    if (file) fread(HSdata, maxSize, 1, file);
+    fclose(file);
+	int i;
+	for (i = 0; i < MAX_SAVED_SCORE; i++)
+	{
+		game = HSdata[i];
+		if (game.index != 0) printf("%02d. %s - Skor: %d\n", i + 1, game.playerName, game.score);
+		else printf("%02d. [Kosong]\n", i + 1);
+	}
+}
+/**
  * Inisialisasi pengaturan sistem pada game
- * 
  * @author Ihsan Fauzan Hanif
  */
 void initializeGameSystem(Game* game)

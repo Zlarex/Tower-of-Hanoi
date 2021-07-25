@@ -7,7 +7,7 @@
  * 201524014 - Muhammad Aziz Taufiqurrahman
  * 
  * main.c
- * Kode program utama
+ * Kode Permainan Tower of Hanoi
  */
 
 #include <stdio.h>
@@ -19,6 +19,8 @@
 
 int main()
 {
-	
+	Game game;
+	initializeGameSystem(&game);
+	menuMain(&game);
 	return 0;
 }

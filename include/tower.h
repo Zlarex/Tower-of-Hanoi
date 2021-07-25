@@ -11,87 +11,64 @@
  * dikhususkan untuk permainan Tower of Hanoi.
  */
 
-#ifndef __TOWER_HEADER_
-#define __TOWER_HEADER_
+#ifndef __TOWER
+#define __TOWER
 
 #include <stdbool.h>
 #include "all.h"
 
-// Pointer pada cakram
+// Pointer pada disk/cakram
 typedef struct _Disk* Address;
 
-// Cakram pada menara
+// Disk pada menara
 typedef struct _Disk {
     int width;
     Address next;
 } Disk;
 
-// Menara
+// Tower
 typedef struct _Tower {
     Address top;
 } Tower;
 
 /**
- * [Deskripsi]
  * Inisialisasi tower, bertujuan untuk mengeset agar isi dari tower kosong
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void createTower(Tower *tower);
-
 /**
- * [Deskripsi]
  * Inisialisasi disk, bertujuan untuk mengatur agar disk memiliki isi (panjang) sesuai
  * dengan width
- * 
- * @author
+ * @author Diana Fauziah
  */
 void createDisk(Address disk, int width);
-
 /**
- * [Deskripsi]
  * Membuat disk baru dengan panjang disk yang telah ditentukan
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 Address allocate(int width);
-
 /**
- * [Deskripsi]
  * Membebaskan memori yang dipesan oleh pointer pada disk
- * 
- * @author
+ * @author Ihsan Fauzan Hanif
  */
 void deallocate(Address disk);
-
 /**
- * [Deskripsi]
  * Mengecek apakah tower memiliki disk atau tidak
- * 
- * @author
+ * @author Diana Fauziah
  */
 bool isEmpty(Tower tower);
-
 /**
- * [Deskripsi]
  * Memasukkan disk pada tower, dengan panjang disk yang diminta oleh width
- * 
- * @author
+ * @author Diana Fauziah
  */
 void push(Tower *tower, int width);
-
 /**
- * [Deskripsi]
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void pop(Tower *tower, int* width);
-
 /**
- * [Deskripsi]
  * Mendapatkan jumlah disk yang berada pada satu tower
- * 
  * @author Ihsan Fauzan Hanif
  */
 int getDiskCount(Tower* tower);
