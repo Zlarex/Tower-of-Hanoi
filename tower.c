@@ -87,9 +87,22 @@ void push(Tower *tower, int width)
  * [Deskripsi]
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void pop(Tower *tower, int* width)
 {
-
+	if ((*tower).top != NULL) {
+		Disk *del = (*tower).top;
+		
+		if (width) != NULL {
+		(*tower).top = NULL;
+		}
+		else {
+			(*tower).top = (*tower).top -> next;
+		}
+		del -> next = NULL;
+		} 
+		else {
+			printf ("Disk udah kosong");
+		}
 }
