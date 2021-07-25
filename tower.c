@@ -39,10 +39,10 @@ void createDisk(Address disk, int width)
  * Dimodifikasi oleh : Ihsan Fauzan Hanif
  */
 Address allocate(int width) {
-	address x = malloc(sizeof(Disk));
+	Address x = malloc(sizeof(Disk));
 	if (x)
 		{
-  		x->width = width
+  		x->width = width;
   		x->next = NULL;
 	}
 	return x;
@@ -93,12 +93,13 @@ void pop(Tower *tower, int* width)
 	if ((*tower).top != NULL) {
 		Disk *del = (*tower).top;
 		
-		if (width != 0) {
+		if (!del->next) {
 		(*tower).top = NULL;
 		}
 		else {
 			(*tower).top = (*tower).top -> next;
 		}
+		*width = del->width;
 		deallocate(del);
 		} 
 		else {

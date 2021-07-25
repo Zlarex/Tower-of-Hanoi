@@ -24,6 +24,14 @@
 #define ENTER 13
 
 /**
+ * Membersihkan isi terminal
+ * @author Ihsan Fauzan Hanif
+ */
+void cls()
+{
+	system("cls");
+}
+/**
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
  * informasi terkait dengan Game bernilai kosong
  * @author
@@ -59,7 +67,7 @@ void menuMain(Game *game)
 	};
 	while (true)
 	{
-		system("cls");
+		cls();
 		printf("-------------------------------------------------\n");
 		printf("\t\tTower of Hanoi\n");
 		printf("-------------------------------------------------\n");
@@ -67,7 +75,7 @@ void menuMain(Game *game)
 		printf("[2]. Lanjutkan Permainan\n");
 		printf("[3]. Permainan Kustom\n");
 		printf("[4]. Skor Tertinggi\n");
-		printf("[5]. Kredit\n");
+		printf("[5]. Tentang Permainan\n");
 		printf("[6]. Keluar\n");
 
 		if (showInvalidMsg)
@@ -78,9 +86,10 @@ void menuMain(Game *game)
 		printf("\nInput: ");
 		int input = 0;
 		scanf("%d", &input);
+		fflush(stdin);
 		input--;
 		if (input < 0 || input > 5) showInvalidMsg = true;
-		else return menuSelect[input](game);
+		else menuSelect[input](game);
 	}
 }
 /**
@@ -89,11 +98,15 @@ void menuMain(Game *game)
  */
 void menuPlayGame(Game *game)
 { 
+	cls();
 	createGame(game);
 	printSaveGame(); 
-	printf("masukkan pilihan save game: "); 
+	printf("\n0. Kembali\n");
+	printf("masukkan posisi yang akan digunakan untuk menyimpan permainan: "); 
 	scanf("%d", &game->index); 
+	if (game->index == 0) return;
 	game->index--; 
+	game->towerLevel = 1;
 	fflush(stdin);
 	printf ("Silakan, masukan nama anda : ");
 	scanf("%[^\n]s", game->playerName); 
@@ -106,11 +119,14 @@ void menuPlayGame(Game *game)
  */
 void menuLoadGame(Game *game) {
 	int pilihan;
-	
+	cls();
 	printSaveGame(); 
-	printf("masukkan pilihan game yang ingin dilanjutkan : ");  
+	printf("\n0. Kembali\n");
+	printf("masukkan posisi dari game yang ingin dilanjutkan : ");  
 	scanf ("%d", &pilihan); 
-	*game = loadgame(--pilihan);
+	if (pilihan == 0) return;
+	fflush(stdin);
+	*game = loadGame(--pilihan);
 	menuLobby(game);
 }
 /**
@@ -121,13 +137,14 @@ void menuLoadGame(Game *game) {
  */
 void menuPracticeGame(Game *game)
 {
-	printf("-----------------MENU PRACTICE GAME---------------\n\n");
-	
 	while(true){
-	system("cls");
-	printf("\t\tMasukan Banyaknya disk pada permainan : ");
-	scanf("%d", &game->towerLevel);
-		if(game->towerLevel == 1 || game->towerLevel== 2 || game->towerLevel == 3 ||game->towerLevel == 4){
+	cls();
+	printf("-----------------MENU PRACTICE GAME---------------\n\n");
+	printf("Masukan Banyaknya disk pada permainan : ");
+	scanf("%d", &game->maxDisk);
+	fflush(stdin);
+		if(game->maxDisk == 1 || game->maxDisk== 2 || game->maxDisk == 3 ||game->maxDisk == 4 || game->maxDisk == 5){
+			game->mode = PRACTICE;
 			menuLobby(game);
 			return;
 		}	
@@ -140,8 +157,9 @@ void menuPracticeGame(Game *game)
 void menuHighScore(Game *game)
 {
 	char pilihan;
-	printf ("Berikut ini merupakan daftar 10 pemain dengan nilai tertinggi : \n ");
-	printHighScore();
+	cls();
+	printf ("Berikut ini merupakan daftar 10 pemain dengan skor tertinggi : \n");
+	printAllHighScore();
 	printf ("Hapus High Score? y/n ");
 	scanf ("%c", &pilihan);
 	switch (pilihan) {
@@ -159,21 +177,22 @@ void menuHighScore(Game *game)
  */
 void menuCredits(Game *game)
 {
+	cls();
 	printf("***********************************************************************************\n");
-	printf("\t\t\t\t TOWER OF HANOI\n");
+	printf("\t\t TOWER OF HANOI\n");
 	printf("***********************************************************************************\n\n");
-	printf("\t\t Permainan yang bertujuan untuk melatih kemampuan\n");
-	printf("\t\t matematis anda dalam memperhitungkan langkah untuk\n");
-	printf("\t\t menyelesaikan permasalahan yang dilakukan dengan cara\n");
-	printf("\t\t memindahkan seluruh disk pada tower yang ada di ujung\n");
+	printf("Permainan yang bertujuan untuk melatih kemampuan\n");
+	printf("Matematis anda dalam memperhitungkan langkah untuk\n");
+	printf("menyelesaikan permasalahan yang dilakukan dengan cara\n");
+	printf("memindahkan seluruh disk pada tower yang ada di ujung\n");
 	printf("===================================================================================\n\n");
 	printf("--------------------------------------------------------\n");
-	printf("|Tower of Hanoi dibuat oleh :					       |\n");
-	printf("|Diana Fauziah - Tunjukkan Versi Terbaik Anda!!!!      |\n");
-	printf("|Ihsan Fauzan Hanif - Hanyalah seorang remaja (iyakah?)|\n");
-	printf("|                     Menyukai dunia pemrograman	   |\n");
-	printf("|M Aziz Taufiqurrahman - (deskripsi diri)			   |\n");
+	printf("|Tower of Hanoi dibuat oleh :							|\n");
+	printf("|Diana Fauziah - Tunjukkan Versi Terbaik Anda!!!!   	|\n");
+	printf("|Ihsan Fauzan Hanif - Orang yang menyukai pemrograman  	|\n");
+	printf("|M Aziz Taufiqurrahman                                 	|\n");
 	printf("--------------------------------------------------------\n");
+	system("pause");
 }
 /**
  * Menu untuk keluar dari program
@@ -184,6 +203,7 @@ void menuCredits(Game *game)
 void menuExit(Game *game)
 {
     char ch;
+	cls();
     printf("-------------------------------------------------\n");
     printf("|Apakah Anda yakin ingin meninggalkan permainan? |\n");
     printf("\n|  Tekan [ESC] untuk keluar                    |\n");
@@ -195,6 +215,7 @@ void menuExit(Game *game)
 //            system("cls");
 //            main();
         }
+		else break;
     } while(ch != ESC);
 }
 /**
@@ -203,10 +224,12 @@ void menuExit(Game *game)
  */
 void menuLobby(Game *game) {
 	int pilihan;
-	printf ("1. Lanjutkan Permainan");
-	printf ("2. Menu Utama");
+	cls();
+	printf ("1. Mulai Permainan\n");
+	printf ("2. Menu Utama\n");
 	printf ("Masukkan pilihan Anda : ");
 	scanf ("%d", &pilihan);
+	fflush(stdin);
 	switch (pilihan) {
 		case 1 : gameEntry(game); break;
 		case 2 : menuMain(game); break;
@@ -220,7 +243,7 @@ void menuLobby(Game *game) {
 void menuPauseGame(Game *game)
 {
 	game->isPaused = true;
-	system("cls");
+	cls();
 	printf("-------------------------------------------------\n");
 	printf("\t\tTower of Hanoi\n");
 	printf("-------------------------------------------------\n\n\n");
@@ -251,7 +274,7 @@ void menuPauseGame(Game *game)
  */
 void menuShowStep(Game *game)
 {
-	system("cls");
+	cls();
 	ShowStep(game, game->towerLevel);
 	printf("\n");
 	printf("\nTekan 'Enter' untuk melanjutkan");
@@ -388,7 +411,7 @@ void printSaveGame()
 	for (i = 0; i < MAX_SAVED_GAME; i++)
 	{
 		game = sgData[i];
-		if (game.index == 0) printf("%02d. [Kosong]\n", i + 1);
+		if (game.index == 0 && strlen(game.playerName) == 0) printf("%02d. [Kosong]\n", i + 1);
 		else printf("%02d. %s - Level: %d - Skor: %d\n", i + 1, game.playerName, game.towerLevel, game.score);
 	}
 }
@@ -400,8 +423,13 @@ void gameEntry(Game *game)
 {
     game->hasGameOver = false;
     game->isPaused = false;
-    game->timeLeft = getMaxTime(game->towerLevel);
-	game->maxDisk = getMaxDisk(game->towerLevel);
+
+	if (game->mode == ORIGINAL)
+	{
+		game->maxDisk = getMaxDisk(game->towerLevel);
+		game->timeLeft = getMaxTime(game->towerLevel);
+	}
+	else game->towerLevel = game->maxDisk;
 
 	int i;
 	for (i = game->maxDisk; i > 0; i--) push(&game->left, i);
@@ -419,18 +447,25 @@ void gameEntry(Game *game)
     pthread_join(thGameTimer, NULL);
 
 	printf("\n[Permainan Berakhir]\n\n");
+	Tower* tempAddr = &game->left;
+	int x;
+	while (!isEmpty(*tempAddr)) pop(tempAddr, &x);
+	tempAddr = &game->middle;
+	while (!isEmpty(*tempAddr)) pop(tempAddr, &x);
+	tempAddr = &game->right;
+	while (!isEmpty(*tempAddr)) pop(tempAddr, &x);
 	printf(game->state == WIN? "Anda Menang!\n" : "Anda Kalah!\n");
 	switch(game->state)
 	{
 		case WIN:
 			if (game->mode == ORIGINAL)
 			{
-				game->score += (game->towerLevel * 10) + game->timeLeft;
+				game->score += (game->towerLevel * 100) + game->timeLeft - game->moveCount;
 				printf("Skor Anda: %d\n", game->score);
 				if (game->towerLevel < 5)
 				{
-					saveGame(game, 0);
-					printf("Mainkan level berikutnya? [Y/N]");
+					saveGame(game, game->index);
+					printf("Mainkan level berikutnya? [Y/N] ");
 					char input = (char)0;
 					scanf("%c", &input);
 					fflush(stdin);
@@ -443,28 +478,32 @@ void gameEntry(Game *game)
 				}
 				else
 				{
-					printf("Selamat! Anda telah menyelesaikan semua level\n");
+					printf("Selamat! Anda telah menyelesaikan semua level.\n\n");
 					printf("Tekan tombol apapun untuk melanjutkan");
 					getch();
 					fflush(stdin);
+					saveHighScore(*game);
 				}
 			}
 			else
 			{
-				printf("Ulangi permainan? [Y/N]");
+				printf("Ulangi permainan? [Y/N] ");
 				char input = (char)0;
 				scanf("%c", &input);
 				fflush(stdin);
 
-				if (input == 'Y' || input == 'y') return menuLobby(game);
+				if (input == 'Y' || input == 'y')
+				{
+					return menuLobby(game);
+				}
 			}
 			return menuMain(game);
 		case LOSE:
 			if (game->mode == ORIGINAL)
 			{
-				printf("Skor Anda: %d\n", game->score);
 				saveHighScore(*game);
 				deleteGame(game->index);
+				printf("Skor Anda: %d\n", game->score);
 				printf("Permainan tidak dapat diulangi.\n");
 				printf("Tekan tombol apapun untuk melanjutkan");
 				getch();
@@ -472,7 +511,7 @@ void gameEntry(Game *game)
 			}
 			else
 			{
-				printf("Ulangi permainan? [Y/N]");
+				printf("Ulangi permainan? [Y/N] ");
 				char input = (char)0;
 				scanf("%c", &input);
 				fflush(stdin);
@@ -488,10 +527,45 @@ void gameEntry(Game *game)
  */
 void printTowerStr(char *str, int width)
 {
-	int i;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO cInfo;
+	GetConsoleScreenBufferInfo(hConsole, &cInfo);
+	WORD consoleAttr = cInfo.wAttributes;
+	int i, j;
 	for (i = 0; i < strlen(str); i++)
 	{
-		printf("%c", (int)*(str + i));
+		if (*(str + i) != -37)
+		{
+			printf("%c", *(str + i));
+			continue;
+		}
+		int len = 0;
+		int lastIndex = 0;
+		for (j = i; j < strlen(str); j++)
+		{
+			len++;
+			if (*(str + j) == ' ') break;
+		}
+		lastIndex = len;
+		len = (len - 1) / width / 2;
+		
+		int color = consoleAttr;
+		switch (len)
+		{
+			case 1: color = 12; break;
+			case 2: color = 14; break;
+			case 3: color = 10; break;
+			case 4: color = 9; break;
+			case 5: color = 13; break;
+		}
+		SetConsoleTextAttribute(hConsole, color);
+		int k;
+		for (k = 0, j = i; k < lastIndex; k++, j++)
+		{
+			printf("%c", *(str + j));
+		}
+		SetConsoleTextAttribute(hConsole, consoleAttr);
+		i += lastIndex - 1;
 	}
 	printf("\n");
 }
@@ -542,6 +616,7 @@ void printTower(Game* g)
 	int heightDiskLeft = getDiskCount(&(g->left));
 	int heightDiskMiddle = getDiskCount(&(g->middle));
 	int heightDiskRight = getDiskCount(&(g->right));
+	printf("\n");
 
 	int i, j;
 	for (i = height + 1; i > 0; i--)
@@ -576,11 +651,12 @@ void printTower(Game* g)
 		printTowerStr(output, sizeEach);
 		// break;
 	}
-	free(&output);
+	free(output);
 	#undef UI_BLOCK
 	#undef UI_POLE
 	#undef UI_GROUND
-}/**
+}
+/**
  * Menjalankan lojik dari permainan
  * @author Ihsan Fauzan Hanif
  */
@@ -592,12 +668,23 @@ void *gameRun(void *argsData)
 	game->state = NONE;
     while (true)
     {
-		system("cls");
+		cls();
 		printf("-------------------------------------------------\n");
 		printf("\t\tTower of Hanoi\n");
-		printf("-------------------------------------------------\n\n\n");
+		printf("-------------------------------------------------\n");
+        if (game->timeLeft <= 0 && game->mode == ORIGINAL)
+		{
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			CONSOLE_SCREEN_BUFFER_INFO csbi = {};
+			
+			GetConsoleScreenBufferInfo(hConsole, &csbi);
+			SetConsoleTextAttribute(hConsole, 12);
+			printf("\nWaktu Habis! Tekan apapun untuk melanjutkan\n\n");
+			SetConsoleTextAttribute(hConsole, csbi.wAttributes);
+			game->state = LOSE;
+		}
+		else printf("\n\n");
 		printTower(game);
-        if (game->timeLeft == 0 && game->mode == ORIGINAL) game->state = LOSE;
 		
 		if (game->state != NONE) break;
         if (game->isPaused) menuPauseGame(game);
@@ -623,11 +710,6 @@ void *gameRun(void *argsData)
 			input[strlen(input) - 1] = (char)0;
 			if (game->mode == PRACTICE)
 			{
-				if (strcmp(input, "P") == 0 || strcmp(input, "p") == 0)
-				{
-					game->isPaused = true;
-					continue;
-				}
 				if (strcmp(input, "H") == 0 || strcmp(input, "h") == 0)
 				{
 					menuShowStep(game);
@@ -638,6 +720,11 @@ void *gameRun(void *argsData)
 					game->state = LOSE;
 					continue;
 				}
+			}
+			if (strcmp(input, "P") == 0 || strcmp(input, "p") == 0)
+			{
+				game->isPaused = true;
+				continue;
 			}
 
 			char *pSrc = strtok(input, " ");
@@ -659,6 +746,7 @@ void *gameRun(void *argsData)
 			if (topSrc > 0 && topSrc < topDest || topDest == 0 && topSrc != topDest)
 			{
 				moveDisk(from, to);
+				game->moveCount++;
 				if (getDiskCount(&game->right) == game->maxDisk) game->state = WIN;
 			}
 			else showInvalidMsg = true;
@@ -674,11 +762,32 @@ void *gameTimer(void *argsData)
 {
 	Runner *runner = (Runner*) argsData;
 	Game* game = *(runner->game);
+	sleep(1);
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi = {};
+	COORD timerCoord;
+	timerCoord.X = 0;
+	timerCoord.Y = 4;
 
-    game->timeLeft++;
     while (game->timeLeft > -1 && game->state == NONE)
     {
-        if (!game->isPaused && game->mode == ORIGINAL) game->timeLeft--;
+        if (!game->isPaused && game->mode == ORIGINAL)
+		{
+			GetConsoleScreenBufferInfo(hConsole, &csbi);
+			SetConsoleCursorPosition(hConsole, timerCoord);
+			printf("                         ");
+			SetConsoleCursorPosition(hConsole, timerCoord);
+			if (game->timeLeft < 5) SetConsoleTextAttribute(hConsole, 12);
+			if (game->timeLeft == 0)
+			{
+				printf("Waktu Habis! Tekan apapun untuk melanjutkan");
+				game->state = LOSE;
+			}
+			else printf("Waktu Tersisa: %d detik", game->timeLeft);
+			SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+			SetConsoleTextAttribute(hConsole, csbi.wAttributes);
+			game->timeLeft--;
+		}
         sleep(1);
     }
     return NULL;
@@ -690,12 +799,13 @@ void *gameTimer(void *argsData)
 void saveHighScore(Game game)
 {
     int maxSize = sizeof(game) * MAX_SAVED_SCORE;
-    Game HSdata[MAX_SAVED_SCORE] = {0};
+    Game HSdata[MAX_SAVED_SCORE];
+    memset(&HSdata, 0, sizeof(HSdata));
+    
     FILE *file = fopen("score.dat", "rb");
     if (file) fread(HSdata, maxSize, 1, file);
     fclose(file);
 
-	if (HSdata[MAX_SAVED_SCORE - 1].score > game.score) return;
     memset(&HSdata[MAX_SAVED_SCORE - 1], 0, sizeof(HSdata[MAX_SAVED_SCORE - 1]));
     memcpy(&HSdata[MAX_SAVED_SCORE - 1], &game, sizeof(game));
     sortHighScore(HSdata);
@@ -715,7 +825,7 @@ void sortHighScore(Game *game)
     int i, j;
     for (i = 0; i < MAX_SAVED_SCORE; i++)
     {
-        for (j = 0; j < MAX_SAVED_SCORE; j++)
+        for (j = MAX_SAVED_SCORE - 1; j > i; j--)
         {
             if (game[j].score > game[j - 1].score)
             {
@@ -745,6 +855,7 @@ bool deleteAllHighScore()
  * 07/22/21
  */
 void ShowStep(Game *game, int choose){
+	cls();
 	printf("===============================================================\n");
 	printf("\t\t\t\t TAKTIK PERMAINAN TOWER OF HANOI\n");
 	printf("===============================================================\n\n");
@@ -811,8 +922,8 @@ void printAllHighScore()
 	for (i = 0; i < MAX_SAVED_SCORE; i++)
 	{
 		game = HSdata[i];
-		if (game.index != 0) printf("%02d. %s - Skor: %d\n", i + 1, game.playerName, game.score);
-		else printf("%02d. [Kosong]\n", i + 1);
+		if (game.index == 0 && strlen(game.playerName) == 0) printf("%02d. [Kosong]\n", i + 1);
+		else printf("%02d. %s - Skor: %d - Total Langkah: %d\n", i + 1, game.playerName, game.score, game.moveCount);
 	}
 }
 /**

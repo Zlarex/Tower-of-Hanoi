@@ -59,6 +59,11 @@ typedef struct _Runner {
 } Runner;
 
 /**
+ * Membersihkan isi terminal
+ * @author Ihsan Fauzan Hanif
+ */
+void cls();
+/**
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
  * informasi terkait dengan Game bernilai kosong
  * @author Diana Fauziah
@@ -89,6 +94,11 @@ void menuLoadGame(Game *game);
  * @author Diana Fauziah
  */
 void menuPracticeGame(Game *game);
+/**
+ * Menampilkan daftar pemain yang memiliki skor tertinggi
+ * @author Ihsan Fauzan Hanif
+ */
+void printAllHighScore();
 /**
  * Menu untuk menampilkan top 10 pemain dengan skor tertinggi
  * @author M Aziz Taufiqurrahman
