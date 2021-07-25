@@ -42,12 +42,19 @@ void createDisk(Address disk, int width)
  * [Deskripsi]
  * Membuat disk baru dengan panjang disk yang telah ditentukan
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
+ * Dimodifikasi oleh : Ihsan Fauzan Hanif
  */
-Address allocate(Address disk, int width)
-{
-
+Address allocate(int width) {
+	address x = malloc(sizeof(Disk));
+	if (x)
+		{
+  		x->width = width
+  		x->next = NULL;
+	}
+	return x;
 }
+
 
 /**
  * [Deskripsi]
