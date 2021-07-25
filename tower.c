@@ -100,13 +100,13 @@ void pop(Tower *tower, int* width)
 	if ((*tower).top != NULL) {
 		Disk *del = (*tower).top;
 		
-		if (width) != NULL {
+		if (width != 0) {
 		(*tower).top = NULL;
 		}
 		else {
 			(*tower).top = (*tower).top -> next;
 		}
-		del -> next = NULL;
+		deallocate(del);
 		} 
 		else {
 			printf ("Disk udah kosong");
