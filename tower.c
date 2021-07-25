@@ -20,11 +20,10 @@
  * [Deskripsi]
  * Inisialisasi tower, bertujuan untuk mengeset agar isi dari tower kosong
  * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
-void createTower(Tower *tower)
-{
-
+void createTower(Tower *tower){
+	(*tower).top = NULL;
 }
 
 /**
