@@ -47,7 +47,7 @@ void menuPlayGame(Game *game)
 	createGame(game);
 	printSaveGame(); 
 	printf("masukkan pilihan save game: "); 
-	scanf("%d", game->index); 
+	scanf("%d", &game->index); 
 	game->index--; 
 	fflush(stdin);
 	printf ("Silakan, masukan nama anda : ");
@@ -68,7 +68,7 @@ void menuLoadGame(Game *game) {
 	printSaveGame(); 
 	printf("masukkan pilihan game yang ingin dilanjutkan : ");  
 	scanf ("%d", &pilihan); 
-	*game = loadGame(pilihan);
+	*game = loadgame(--pilihan);
 	menuLobby(game);
 }
 
