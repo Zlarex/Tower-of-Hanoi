@@ -457,6 +457,7 @@ void gameEntry(Game *game)
 			if (game->mode == ORIGINAL)
 			{
 				printf("Skor Anda: %d\n", game->score);
+				saveHighScore(*game);
 				deleteGame(game->index);
 				printf("Permainan tidak dapat diulangi.\n");
 				printf("Tekan tombol apapun untuk melanjutkan");
@@ -688,6 +689,7 @@ void saveHighScore(Game game)
     if (file) fread(HSdata, maxSize, 1, file);
     fclose(file);
 
+	if (HSdata[MAX_SAVED_SCORE - 1].score > game.score) return;
     memset(&HSdata[MAX_SAVED_SCORE - 1], 0, sizeof(HSdata[MAX_SAVED_SCORE - 1]));
     memcpy(&HSdata[MAX_SAVED_SCORE - 1], &game, sizeof(game));
     sortHighScore(HSdata);
