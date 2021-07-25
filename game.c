@@ -88,19 +88,30 @@ void menuMain(Game *game)
  * @author M Aziz Taufiqurrahman
  */
 void menuPlayGame(Game *game)
-{
-	char nama;
+{ 
+	createGame(game);
+	printSaveGame(); 
+	printf("masukkan pilihan save game: "); 
+	scanf("%d", &game->index); 
+	game->index--; 
+	fflush(stdin);
 	printf ("Silakan, masukan nama anda : ");
-	scanf ("%c", &nama);
-	gameBegin ();
+	scanf("%[^\n]s", game->playerName); 
+	fflush(stdin);
+	menuLobby(game);
 }
 /**
  * Menu untuk memuat permainan lama (yang telah tersimpan)
  * @author M Aziz Taufiqurrahman
  */
 void menuLoadGame(Game *game) {
-	printf ("Silakan melanjutkan permainanmu :) ");
-	loadGame ();
+	int pilihan;
+	
+	printSaveGame(); 
+	printf("masukkan pilihan game yang ingin dilanjutkan : ");  
+	scanf ("%d", &pilihan); 
+	*game = loadgame(--pilihan);
+	menuLobby(game);
 }
 /**
  * Menu untuk membuat permainan yang dikustomisasi oleh pemain
@@ -124,26 +135,21 @@ void menuPracticeGame(Game *game)
 }
 /**
  * Menu untuk menampilkan top 10 pemain dengan skor tertinggi
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void menuHighScore(Game *game)
 {
-
-	sortHighScore();
-   
-    FILE *tampil;
-    struct saveHighScore data;
-    
-    tampil = fopen("KumpulanSkor.txt", "rb");
-    
-    while (!feof(tampil)) {
-        fscanf(tampil, "%s - %d\n", &data.NamaPemain, &data.skor);
-        printf("Papan Peringkat\n");
-        printf("%s - %d\n\n", data.NamaPemain, data.skor);
+	char pilihan;
+	printf ("Berikut ini merupakan daftar 10 pemain dengan nilai tertinggi : \n ");
+	printHighScore();
+	printf ("Hapus High Score? y/n ");
+	scanf ("%c", &pilihan);
+	switch (pilihan) {
+		case 'y' : deleteAllHighScore(); break; 
+		case 'n' : break;
+		default : printf ("Anda memasukkan nilai yang salah :( ");
 	}
-    
-	system("pause"); 
-	//harusnya ada void menu utama 
+	system("pause");
 }
 /**
  * Menu untuk menampilkan informasi mengenai game dan/atau developer
@@ -198,12 +204,12 @@ void menuExit(Game *game)
 void menuLobby(Game *game) {
 	int pilihan;
 	printf ("1. Lanjutkan Permainan");
-	printf ("2. Keluar Permainan");
+	printf ("2. Menu Utama");
 	printf ("Masukkan pilihan Anda : ");
 	scanf ("%d", &pilihan);
 	switch (pilihan) {
-		// case '1' : gameRun(); break;
-		// case '2' : saveGame (); break; 
+		case 1 : gameEntry(game); break;
+		case 2 : menuMain(game); break;
 		default : printf ("Mohon maaf Anda salah dalam input nilai :( ");
 	}
 }
@@ -271,15 +277,15 @@ int getMaxDisk(int towerLevel) {
 }
 /**
  * Mendapatkan waktu maksimal yang bisa digunakan untuk bermain berdasarkan level dari tower
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 int getMaxTime(int towerLevel) {
 	switch (towerLevel){
 		case 1 : return 30; break; 
 		case 2 : return 60; break; 
-		case 3 : return 75; break; 
-		case 4 : return 90; break; 
-		case 5 : return 90; break;
+		case 3 : return 100; break; 
+		case 4 : return 300; break; 
+		case 5 : return 150; break;
 	}
 }
 /**
