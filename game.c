@@ -145,9 +145,14 @@ void menuLobby(Game *game) {
  * 
  * @author M Aziz Taufiqurrahman
  */
-int getMaxDisk(int towerLevel)
-{
-
+int getMaxDisk(int towerLevel) {
+	switch (towerLevel) {
+		case 1 : return 2; break;
+		case 2 : return 3; break;
+		case 3 : return 4; break;
+		case 4 : return 5; break;
+		case 5 : return 5; break;
+	}
 }
 
 /**
@@ -156,9 +161,14 @@ int getMaxDisk(int towerLevel)
  * 
  * @author
  */
-int getMaxTime(int towerLevel)
-{
-
+int getMaxTime(int towerLevel) {
+	switch (towerLevel){
+		case 1 : return 30; break; 
+		case 2 : return 60; break; 
+		case 3 : return 75; break; 
+		case 4 : return 90; break; 
+		case 5 : return 90; break;
+	}
 }
 
 /**
