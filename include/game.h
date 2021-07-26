@@ -45,7 +45,7 @@ typedef struct _Game {
     int maxDisk;
     int score;
     int timeLeft;
-    bool hasGameOver;
+    bool isLevelMax;
     bool isPaused;
     GameMode mode;
     GameState state;

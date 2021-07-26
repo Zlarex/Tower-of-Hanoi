@@ -30,6 +30,10 @@
 void cls()
 {
 	system("cls");
+	HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi = {0};
+	GetConsoleScreenBufferInfo(hOutput, &csbi);
+	SetConsoleTextAttribute(hOutput, csbi.wAttributes);
 }
 /**
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
@@ -162,8 +166,12 @@ void menuHighScore(Game *game)
 	printAllHighScore();
 	printf ("Hapus High Score? y/n ");
 	scanf ("%c", &pilihan);
+	fflush(stdin);
 	switch (pilihan) {
-		case 'y' : deleteAllHighScore(); break; 
+		case 'y' :
+			deleteAllHighScore();
+			return menuHighScore(game);
+			break; 
 		case 'n' : break;
 		default : printf ("Anda memasukkan nilai yang salah :( ");
 	}
@@ -250,7 +258,7 @@ void menuPauseGame(Game *game)
 	printTower(game);
 	printf("\n[GAME DIJEDA]\n");
 	if (game->mode == ORIGINAL) printf("\nWaktu tersisa: %d detik", game->timeLeft);	
-	printf("\nTekan 'Enter' untuk melanjutkan");
+	printf("\n[Enter] Lanjutkan Permainan\n[ESC] Menyerah\n\nInput: ");
 	while (true)
 	{
 		fflush(stdin);
@@ -263,7 +271,6 @@ void menuPauseGame(Game *game)
 		else if ((int)input == ESC)
 		{
 			game->state = LOSE;
-			game->score = 0;
 			break;
 		}
 	}
@@ -412,7 +419,7 @@ void printSaveGame()
 	{
 		game = sgData[i];
 		if (game.index == 0 && strlen(game.playerName) == 0) printf("%02d. [Kosong]\n", i + 1);
-		else printf("%02d. %s - Level: %d - Skor: %d\n", i + 1, game.playerName, game.towerLevel, game.score);
+		else printf("%02d. %s - Level: %d - Skor: %d %s\n", i + 1, game.playerName, game.towerLevel, game.score, game.isLevelMax? " [TAMAT]" : "");
 	}
 }
 /**
@@ -421,7 +428,7 @@ void printSaveGame()
  */
 void gameEntry(Game *game)
 {
-    game->hasGameOver = false;
+    game->isLevelMax = false;
     game->isPaused = false;
 
 	if (game->mode == ORIGINAL)
@@ -461,28 +468,30 @@ void gameEntry(Game *game)
 			if (game->mode == ORIGINAL)
 			{
 				game->score += (game->towerLevel * 100) + game->timeLeft - game->moveCount;
+				if (game->towerLevel == 5) game->score += game->score * 2 / 10;
 				printf("Skor Anda: %d\n", game->score);
 				if (game->towerLevel < 5)
 				{
+					game->towerLevel++;
 					saveGame(game, game->index);
-					printf("Mainkan level berikutnya? [Y/N] ");
+					printf("Anda telah naik level! Lanjutkan sekarang? [Y/N] ");
 					char input = (char)0;
 					scanf("%c", &input);
 					fflush(stdin);
 
 					if (input == 'Y' || input == 'y')
 					{
-						game->towerLevel++;
 						return menuLobby(game);
 					}
 				}
 				else
 				{
-					printf("Selamat! Anda telah menyelesaikan semua level.\n\n");
+					game->isLevelMax = true;
+					saveGame(game, game->index);
+					printf("Selamat! Anda telah menyelesaikan semua level.\nUntuk mendapatkan skor lagi, anda bisa mengulangi level ini.\n\n");
 					printf("Tekan tombol apapun untuk melanjutkan");
 					getch();
 					fflush(stdin);
-					saveHighScore(*game);
 				}
 			}
 			else
@@ -696,7 +705,8 @@ void *gameRun(void *argsData)
 				printf("[H] Show hint\n");
 				printf("[Q] Menyerah\n");
 			}
-			printf("Masukkan 2 nomor Tower untuk memindahkan Disk\n");
+			printf("Masukkan nomor menara asal dan tujuan yang dipisahkan spasi untuk memindahkan disk.\n");
+			printf("\nTotal langkah: %d\n", game->moveCount);
 			if (showInvalidMsg)
 			{
 				printf("\nInput tidak valid!\n");
@@ -932,6 +942,15 @@ void printAllHighScore()
  */
 void initializeGameSystem(Game* game)
 {
+	#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+	#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwMode = 0;
+	GetConsoleMode(hOut, &dwMode);
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	SetConsoleMode(hOut, dwMode);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 	createGame(game);
+	#undef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+	#endif
 }
