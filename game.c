@@ -426,7 +426,7 @@ Game loadGame(int index)
 
 	// ambil save game, copy isi save game dengan index yang diminta ke retVal
     loadAllSaveGame(gameData, maxSize);
-    memcpy(&retVal + (index * sizeof(retVal)), gameData, sizeof(retVal));
+    memcpy(&retVal, gameData + (index * sizeof(retVal)), sizeof(retVal));
     free(gameData);
     return retVal;
 }
