@@ -16,17 +16,14 @@ Terdapat beberapa pra-syarat umum agar kode program dapat terkompilasi, seperti:
 - Sistem Operasi Windows 10
 - Compiler yang mendukung kompilasi kode program dengan penggunaan `Posix Thread`. [(Lihat disini)](https://en.wikipedia.org/wiki/POSIX_Threads)
 
-### Lisensi
-Proyek ini menggunakan lisensi MIT.
-
 ## **Tampilan Program**
 - Tampilan menu utama<br/>
-![menu utama](/images/mainmenu.png)
+![menu utama](/images/mainmenu.PNG)
 - Tampilan permainan mode `ORIGINAL`<br/>
-![permainan mode original](/images/original.png)
+![permainan mode original](/images/original.PNG)
 - Tampilan permainan mode `PRACTICE`<br/>
-![permainan mode practice](/images/practice.png)
+![permainan mode practice](/images/practice.PNG)
 - Tampilan daftar permainan yang telah tersimpan<br/>
-![daftar permainan tersimpan](/images/savedgame.png)
+![daftar permainan tersimpan](/images/savedgame.PNG)
 - Tampilan daftar 10 pemain dengan skor tertinggi<br/>
-![daftar pemain dengan skor tinggi](/images/highscore.png)
+![daftar pemain dengan skor tinggi](/images/highscore.PNG)
