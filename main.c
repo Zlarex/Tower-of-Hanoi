@@ -19,8 +19,12 @@
 
 int main()
 {
+	// inisialisasi sistem permainan
 	Game game;
 	initializeGameSystem(&game);
+
+	// memanggil menu utama
 	menuMain(&game);
+	
 	return 0;
 }

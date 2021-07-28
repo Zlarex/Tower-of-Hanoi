@@ -114,6 +114,8 @@ int getDiskCount(Tower* tower)
 {
 	Address ptr = tower->top;
 	int count = 0;
+
+	// increment sampai pointernya NULL
 	while(ptr)
 	{
 		count++;
