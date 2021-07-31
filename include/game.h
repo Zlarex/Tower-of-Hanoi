@@ -59,11 +59,6 @@ typedef struct _Runner {
 } Runner;
 
 /**
- * Membersihkan isi terminal
- * @author Ihsan Fauzan Hanif
- */
-void cls();
-/**
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
  * informasi terkait dengan Game bernilai kosong
  * @author Diana Fauziah
@@ -74,61 +69,6 @@ void createGame(Game *game);
  * @author Ihsan Fauzan Hanif
  */
 void createRunner(Runner *runner);
-/**
- * Menu utama dalam permainan
- * @author Ihsan Fauzan Hanif
- */
-void menuMain(Game *game);
-/**
- * Menu untuk memulai permainan baru
- * @author M Aziz Taufiqurrahman
- */
-void menuPlayGame(Game *game);
-/**
- * Menu untuk memuat permainan lama (yang telah tersimpan)
- * @author M Aziz Taufiqurrahman
- */
-void menuLoadGame(Game *game);
-/**
- * Menu untuk membuat permainan yang dikustomisasi oleh pemain
- * @author Diana Fauziah
- */
-void menuPracticeGame(Game *game);
-/**
- * Menampilkan daftar pemain yang memiliki skor tertinggi
- * @author Ihsan Fauzan Hanif
- */
-void printAllHighScore();
-/**
- * Menu untuk menampilkan top 10 pemain dengan skor tertinggi
- * @author M Aziz Taufiqurrahman
- */
-void menuHighScore(Game *game);
-/**
- * Menu untuk menampilkan informasi mengenai game dan/atau developer
- * @author Diana Fauziah
- */
-void menuCredits(Game *game);
-/**
- * Menu untuk keluar dari program
- * @author Diana Fauziah
- */
-void menuExit(Game *game);
-/**
- * Menu sebagai tempat berhenti sesaat sebelum permainan dimulai
- * @author M Aziz Taufiqurrahman
- */
-void menuLobby(Game *game);
-/**
- * Menu untuk memulai permainan baru
- * @author Ihsan Fauzan Hanif
- */
-void menuPauseGame(Game *game);
-/**
- * Menu untuk memulai permainan baru
- * @author Ihsan Fauzan Hanif
- */
-void menuShowStep(Game *game);
 /**
  * Mendapatkan disk maksimal yang bisa dimasukkan berdasarkan level dari tower 
  * @author M Aziz Tafiqurrahman
@@ -145,17 +85,12 @@ int getMaxTime(int towerLevel);
  */
 int getMinMoves(int towerLevel);
 /**
- * Memindahkan blok pada tower yang satu ke tower yang lain
- * @author Diana Fauziah
- */
-void moveDisk(Tower* src, Tower* dest);
-/**
  * Menampilkan taktik bermain Tower of hanoi
  * @author 
  * Diana Fauziah
  * 07/22/21
  */
-void ShowStep(Game *game, int choose);
+void showStep(Game *game, int choose);
 /**
  * Menyimpan game dengan posisi penyimpanan berdasarkan index
  * @author Ihsan Fauzan Hanif
@@ -180,12 +115,12 @@ bool deleteGame(int index);
  * Menampilkan daftar permainan tersimpan
  * @author Ihsan Fauzan Hanif
  */
-void printSaveGame();
+int printSaveGame();
 /**
  * Titik masuk dari permainan
  * @author Ihsan Fauzan Hanif
  */
-void gameEntry(Game *game);
+int gameEntry(Game *game);
 /**
  * Menampilkan output isi dari tower berdasarkan string.
  * @author Ihsan Fauzan Hanif
@@ -205,26 +140,6 @@ void *gameRun(void *argsData);
  * @author Ihsan Fauzan Hanif
  */
 void *gameTimer(void *argsData);
-/**
- * Menyimpan skor dari permainan
- * @author Ihsan Fauzan Hanif
- */
-void saveHighScore(Game game);
-/**
- * Menyortir isi dari file highscore
- * @author Ihsan Fauzan Hanif
- */
-void sortHighScore(Game *game);
-/**
- * Menghapus semua skor yang tersimpan
- * @author Ihsan Fauzan Hanif
- */
-bool deleteAllHighScore();
-/**
- * Menampilkan seluruh daftar high score
- * @author Ihsan Fauzan Hanif
- */
-void printAllHighScore();
 /**
  * Inisialisasi pengaturan sistem pada game
  * @author Ihsan Fauzan Hanif

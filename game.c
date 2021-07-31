@@ -20,23 +20,6 @@
 #include <unistd.h>
 #include "include/all.h"
 
-#define ESC 27		// key ESC
-#define ENTER 13	// key ENTER
-
-/**
- * Membersihkan isi terminal
- * @author Ihsan Fauzan Hanif
- */
-void cls()
-{
-	// hapus isi terminal dan set warna default menjadi bawaan
-	// dari terminal (putih biasanya)
-	system("cls");
-	HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO csbi = {0};
-	GetConsoleScreenBufferInfo(hOutput, &csbi);
-	SetConsoleTextAttribute(hOutput, csbi.wAttributes);
-}
 /**
  * Inisialisasi sistem Game, bertujuan untuk mengatur agar semua
  * informasi terkait dengan Game bernilai kosong
@@ -57,262 +40,6 @@ void createRunner(Runner *runner)
 {
 	// mengisi blok memori yang digunakan Runner dengan nilai 0
 	memset(runner, 0, sizeof(*runner));
-}
-/**
- * Menu utama dalam permainan
- * @author Ihsan Fauzan Hanif
- */
-void menuMain(Game *game)
-{
-	bool showInvalidMsg = false;
-
-	// pointer ke fungsi menu yang digunakan pada program
-	void (*menuSelect[6])(Game*) = {
-		menuPlayGame,
-		menuLoadGame,
-		menuPracticeGame,
-		menuHighScore,
-		menuCredits,
-		menuExit
-	};
-	while (true)
-	{
-		cls();
-		printf("-------------------------------------------------\n");
-		printf("\t\tTower of Hanoi\n");
-		printf("-------------------------------------------------\n");
-		printf("\n[1]. Permainan Baru\n");
-		printf("[2]. Lanjutkan Permainan\n");
-		printf("[3]. Permainan Kustom\n");
-		printf("[4]. Skor Tertinggi\n");
-		printf("[5]. Tentang Permainan\n");
-		printf("[6]. Keluar\n");
-
-		// tampilkan pesan jika input tidak valid
-		if (showInvalidMsg)
-		{
-			printf("\nInput tidak valid!\n");
-			showInvalidMsg = false;
-		}
-		printf("\nInput: ");
-		int input = 0;
-		scanf("%d", &input);
-		fflush(stdin);
-		input--;
-		if (input < 0 || input > 5) showInvalidMsg = true;
-		else
-		{
-			// panggil fungsi via pointer
-			menuSelect[input](game);
-		}
-	}
-}
-/**
- * Menu untuk memulai permainan baru
- * @author M Aziz Taufiqurrahman
- */
-void menuPlayGame(Game *game)
-{ 
-	cls();
-	createGame(game);
-	printSaveGame(); 
-	printf("\n0. Kembali\n");
-	printf("masukkan posisi yang akan digunakan untuk menyimpan permainan: "); 
-	scanf("%d", &game->index); 
-
-	// set index atau posisi dari permainan pada data save game
-	// (hitungan dimulai dari 0)
-	if (game->index == 0) return;
-	game->index--; 
-
-	game->towerLevel = 1;
-	fflush(stdin);
-	printf ("Silakan, masukan nama anda : ");
-	scanf("%[^\n]s", game->playerName); 
-	fflush(stdin);
-	saveGame(game, game->index);
-	menuLobby(game);
-}
-/**
- * Menu untuk memuat permainan lama (yang telah tersimpan)
- * @author M Aziz Taufiqurrahman
- */
-void menuLoadGame(Game *game) {
-	int pilihan;
-	cls();
-	printSaveGame(); 
-	printf("\n0. Kembali\n");
-	printf("masukkan posisi dari game yang ingin dilanjutkan : ");  
-	scanf ("%d", &pilihan); 
-	if (pilihan == 0) return;
-	fflush(stdin);
-
-	// ambil data permainan berdasarkan index/pilihan (hitungan
-	// dimulai dari 0)
-	*game = loadGame(--pilihan);
-	menuLobby(game);
-}
-/**
- * Menu untuk membuat permainan yang dikustomisasi oleh pemain
- * @author
- * Diana Fauziah
- * 07/21/21
- */
-void menuPracticeGame(Game *game)
-{
-	while(true){
-	cls();
-	createGame(game);
-	printf("-----------------MENU PRACTICE GAME---------------\n\n");
-	printf("Masukan Banyaknya disk pada permainan : ");
-	scanf("%d", &game->maxDisk);
-	fflush(stdin);
-		if(game->maxDisk == 1 || game->maxDisk== 2 || game->maxDisk == 3 ||game->maxDisk == 4 || game->maxDisk == 5){
-			game->mode = PRACTICE;
-			menuLobby(game);
-			return;
-		}	
-	}
-}
-/**
- * Menu untuk menampilkan top 10 pemain dengan skor tertinggi
- * @author M Aziz Taufiqurrahman
- */
-void menuHighScore(Game *game)
-{
-	char pilihan;
-	cls();
-	printf ("Berikut ini merupakan daftar 10 pemain dengan skor tertinggi : \n");
-	printAllHighScore();
-	printf ("Hapus High Score? y/n ");
-	scanf ("%c", &pilihan);
-	fflush(stdin);
-	switch (pilihan) {
-		case 'y' :
-			deleteAllHighScore();
-			return menuHighScore(game);
-			break; 
-		case 'n' : break;
-		default : printf ("Anda memasukkan nilai yang salah :( ");
-	}
-	system("pause");
-}
-/**
- * Menu untuk menampilkan informasi mengenai game dan/atau developer
- * @author
- * Diana Fauziah
- * 07/21/21
- */
-void menuCredits(Game *game)
-{
-	cls();
-	printf("***********************************************************************************\n");
-	printf("\t\t TOWER OF HANOI\n");
-	printf("***********************************************************************************\n\n");
-	printf("Permainan yang bertujuan untuk melatih kemampuan\n");
-	printf("Matematis anda dalam memperhitungkan langkah untuk\n");
-	printf("menyelesaikan permasalahan yang dilakukan dengan cara\n");
-	printf("memindahkan seluruh disk pada tower yang ada di ujung\n");
-	printf("===================================================================================\n\n");
-	printf("--------------------------------------------------------\n");
-	printf("|Tower of Hanoi dibuat oleh :							|\n");
-	printf("|Diana Fauziah - Tunjukkan Versi Terbaik Anda!!!!   	|\n");
-	printf("|Ihsan Fauzan Hanif - Orang yang menyukai pemrograman  	|\n");
-	printf("|M Aziz Taufiqurrahman                                 	|\n");
-	printf("--------------------------------------------------------\n");
-	system("pause");
-}
-/**
- * Menu untuk keluar dari program
- * @author
- * Diana Fauziah
- * 07/21/21
- */
-void menuExit(Game *game)
-{
-    char ch;
-	cls();
-    printf("-------------------------------------------------\n");
-    printf("|Apakah Anda yakin ingin meninggalkan permainan? |\n");
-    printf("\n|  Tekan [ESC] untuk keluar                    |\n");
-    printf("=================================================\n");
-    do {
-		// jika tombol yang ditekan itu ESC, hentikan program
-        ch = getch();
-        if(ch == ESC){
-        	exit(0);
-        }
-		else break;
-    } while(ch != ESC);
-}
-/**
- * Menu sebagai tempat berhenti sesaat sebelum permainan dimulai
- * @author M Aziz Taufiqurrahman
- */
-void menuLobby(Game *game) {
-	int pilihan;
-	cls();
-	printf ("1. Mulai Permainan\n");
-	printf ("2. Menu Utama\n");
-	printf ("Masukkan pilihan Anda : ");
-	scanf ("%d", &pilihan);
-	fflush(stdin);
-	switch (pilihan) {
-		case 1 : gameEntry(game); break;
-		case 2 : menuMain(game); break;
-		default : printf ("Mohon maaf Anda salah dalam input nilai :( ");
-	}
-}
-/**
- * Menu untuk memulai permainan baru
- * @author Ihsan Fauzan Hanif
- */
-void menuPauseGame(Game *game)
-{
-	game->isPaused = true;
-	cls();
-	printf("-------------------------------------------------\n");
-	printf("\t\tTower of Hanoi\n");
-	printf("-------------------------------------------------\n\n\n");
-	printTower(game);
-	printf("\n[GAME DIJEDA]\n");
-	if (game->mode == ORIGINAL) printf("\nWaktu tersisa: %d detik", game->timeLeft);	
-	printf("\n[Enter] Lanjutkan Permainan\n[ESC] Menyerah\n\nInput: ");
-	while (true)
-	{
-		// selagi dijeda, jika menerima key input ENTER lanjutkan permainan, jika ESC
-		// permainan berakhir (kalah)
-		fflush(stdin);
-		char input = getch();
-		if ((int)input == ENTER)
-		{
-			game->isPaused = false;
-			break;
-		}
-		else if ((int)input == ESC)
-		{
-			game->state = LOSE;
-			break;
-		}
-	}
-}
-/**
- * Menu untuk memulai permainan baru
- * @author Ihsan Fauzan Hanif
- */
-void menuShowStep(Game *game)
-{
-	cls();
-	ShowStep(game, game->towerLevel);
-	printf("\n");
-	printf("\nTekan 'Enter' untuk melanjutkan");
-	while (true)
-	{
-		// keluar dari menu ini jika input key-nya ENTER
-		fflush(stdin);
-		char input = getch();
-		if ((int)input == ENTER) break;
-	}
 }
 /**
  * Mendapatkan disk maksimal yang bisa dimasukkan berdasarkan level dari tower 
@@ -356,20 +83,6 @@ int getMinMoves(int towerLevel)
 	// setelah shift: 0 1 0 0 [4]
 	// setelah dikurangi 1: 0 0 1 1 [3]
 	return 1 << towerLevel - 1;
-}
-/**
- * Memindahkan blok pada tower yang satu ke tower yang lain
- * @author
- * Diana Fauziah
- * 07/22/21
- */
-void moveDisk(Tower* src, Tower* dest)
-{
-	// lepas disk dari tower satu, ambil datanya, kemudian tower tujuan diisi disk
-	// dengan data (width) yang dilepas tadi
-    int width = 0;
-    pop(src, &width);
-    push(dest, width);
 }
 /**
  * Menyimpan game dengan posisi penyimpanan berdasarkan index
@@ -445,7 +158,7 @@ bool deleteGame(int index)
  * Menampilkan daftar permainan tersimpan
  * @author Ihsan Fauzan Hanif
  */
-void printSaveGame()
+int printSaveGame()
 {
 	Game sgData[MAX_SAVED_GAME] = {0};
 	Game game;
@@ -457,19 +170,48 @@ void printSaveGame()
 	memcpy(sgData, gameData, maxSize);
 	free(gameData);
 
+	printf("%-7s %-20s %-7s %s", "No", "Nama Pemain", "Level", "Skor");
+	printf("\n--------------------------------------------------------");
+
+	int count = 0;
+
 	int i;
 	for (i = 0; i < MAX_SAVED_GAME; i++)
 	{
 		game = sgData[i];
-		if (game.index == 0 && strlen(game.playerName) == 0) printf("%02d. [Kosong]\n", i + 1);
-		else printf("%02d. %s - Level: %d - Skor: %d %s\n", i + 1, game.playerName, game.towerLevel, game.score, game.isLevelMax? " [TAMAT]" : "");
+		char num[7] = {0};
+		char playerName[20] = {0};
+		char level[7] = {0};
+		char score[5] = {0};
+		memcpy(num, "[", 1);
+		itoa(i + 1, num + 1, 10);
+		memcpy(num + strlen(num), "].", 2);
+		if (game.index == 0 && strlen(game.playerName) == 0)
+		{
+			memcpy(playerName, "-", 1);
+			memcpy(level, "-", 1);
+			memcpy(score, "-", 1);
+		}
+		else
+		{
+			int len = strlen(game.playerName);
+
+			memcpy(playerName, game.playerName, len >= 20? 16 : len);
+			if (len >= 20) memcpy(playerName + len, "...", 3);
+			itoa(game.towerLevel, level, 10);
+			itoa(game.score, score, 10);
+			count++;
+		}
+		printf("\n%-7s %-20s %-7s %s", num, playerName, level, score);
 	}
+	printf("\n--------------------------------------------------------\n");
+	return count;
 }
 /**
  * Titik masuk dari permainan
  * @author Ihsan Fauzan Hanif
  */
-void gameEntry(Game *game)
+int gameEntry(Game *game)
 {
     game->isLevelMax = false;
     game->isPaused = false;
@@ -513,73 +255,8 @@ void gameEntry(Game *game)
 	tempAddr = &game->right;
 	while (!isEmpty(*tempAddr)) pop(tempAddr, &x);
 	printf(game->state == WIN? "Anda Menang!\n" : "Anda Kalah!\n");
-	switch(game->state)
-	{
-		case WIN:
-			if (game->mode == ORIGINAL)
-			{
-				// update skor jika menang
-				game->score += (game->towerLevel * 100) + game->timeLeft - game->moveCount;
-				if (game->towerLevel == 5) game->score += game->score * 2 / 10;
-				printf("Skor Anda: %d\n", game->score);
-				if (game->towerLevel < 5)
-				{
-					game->towerLevel++;
-					saveGame(game, game->index);
-					printf("Anda telah naik level! Lanjutkan sekarang? [Y/N] ");
-					char input = (char)0;
-					scanf("%c", &input);
-					fflush(stdin);
-					if (input == 'Y' || input == 'y') return menuLobby(game);
-				}
-				else
-				{
-					// hanya simpan skor dan data bahwa level sudah max kalau sudah mencapai
-					// level 5
-					game->isLevelMax = true;
-					saveGame(game, game->index);
-					printf("Selamat! Anda telah menyelesaikan semua level.\n");
-					printf("Untuk mendapatkan skor lagi, anda bisa mengulangi level ini.\n\n");
-					printf("Tekan tombol apapun untuk melanjutkan");
-					getch();
-					fflush(stdin);
-				}
-			}
-			else
-			{
-				// hanya bisa mengulangi atau keluar dari permainan jika modenya PRACTICE
-				printf("Ulangi permainan? [Y/N] ");
-				char input = (char)0;
-				scanf("%c", &input);
-				fflush(stdin);
-				if (input == 'Y' || input == 'y') return menuLobby(game);
-			}
-			return menuMain(game);
-		case LOSE:
-			if (game->mode == ORIGINAL)
-			{
-				// simpan skor hasil permainan jika kalah dalam permainan, juga hapus data
-				// permainannya karena dilarang untuk mengulangi permainan ketika sudah kalah
-				saveHighScore(*game);
-				deleteGame(game->index);
-				printf("Skor Anda: %d\n", game->score);
-				printf("Permainan tidak dapat diulangi.\n");
-				printf("Tekan tombol apapun untuk melanjutkan");
-				getch();
-				fflush(stdin);
-			}
-			else
-			{
-				// hanya bisa mengulangi atau keluar dari permainan jika modenya PRACTICE
-				printf("Ulangi permainan? [Y/N] ");
-				char input = (char)0;
-				scanf("%c", &input);
-				fflush(stdin);
-
-				if (input == 'Y' || input == 'y') return menuLobby(game);
-			}
-			return menuMain(game);
-	}
+	
+	return game->mode == PRACTICE? NONE : game->state;
 }
 /**
  * Menampilkan output isi dari tower berdasarkan string.
@@ -778,7 +455,34 @@ void *gameRun(void *argsData)
 		printTower(game);
 		
 		if (game->state != NONE) break;
-        if (game->isPaused) menuPauseGame(game);
+        if (game->isPaused)
+		{
+			cls();
+			printf("-------------------------------------------------\n");
+			printf("\t\tTower of Hanoi\n");
+			printf("-------------------------------------------------\n\n\n");
+			printTower(game);
+			printf("\n[GAME DIJEDA]\n");
+			if (game->mode == ORIGINAL) printf("\nWaktu tersisa: %d detik", game->timeLeft);	
+			printf("\n[Enter] Lanjutkan Permainan\n[ESC] Menyerah\n\nInput: ");
+			while (true)
+			{
+				// selagi dijeda, jika menerima key input ENTER lanjutkan permainan, jika ESC
+				// permainan berakhir (kalah)
+				char input = getch();
+				fflush(stdin);
+				if ((int)input == ENTER)
+				{
+					game->isPaused = false;
+					break;
+				}
+				else if ((int)input == ESC)
+				{
+					game->state = LOSE;
+					break;
+				}
+			}
+		}
         else
         {
 			// terima input dari pemain
@@ -806,7 +510,17 @@ void *gameRun(void *argsData)
 			{
 				if (strcmp(input, "H") == 0 || strcmp(input, "h") == 0)
 				{
-					menuShowStep(game);
+					cls();
+					showStep(game, game->maxDisk);
+					printf("\n");
+					printf("\nTekan 'Enter' untuk melanjutkan");
+					while (true)
+					{
+						// keluar dari menu ini jika input key-nya ENTER
+						char input = getch();
+						fflush(stdin);
+						if ((int)input == ENTER) break;
+					}
 					continue;
 				}
 				if (strcmp(input, "Q") == 0 || strcmp(input, "q") == 0)
@@ -907,91 +621,27 @@ void *gameTimer(void *argsData)
     return NULL;
 }
 /**
- * Menyimpan skor dari permainan
- * @author Ihsan Fauzan Hanif
- */
-void saveHighScore(Game game)
-{
-	// alokasi blok memori untuk menyimpan seluruh data highscore
-    int maxSize = sizeof(game) * MAX_SAVED_SCORE;
-    Game HSdata[MAX_SAVED_SCORE];
-    memset(&HSdata, 0, sizeof(HSdata));
-    
-    FILE *file = fopen("score.dat", "rb");
-    if (file) fread(HSdata, maxSize, 1, file);
-    fclose(file);
-
-    // ambil data highscore yang dulu, kemudian data baru dimasukkan ke dalam highscore
-	// apabila record terakhir pada highscore lebih dari data baru, kemudian sortir isinya
-	if (game.score < HSdata[MAX_SAVED_SCORE - 1].score) return;
-    memset(&HSdata[MAX_SAVED_SCORE - 1], 0, sizeof(HSdata[MAX_SAVED_SCORE - 1]));
-    memcpy(&HSdata[MAX_SAVED_SCORE - 1], &game, sizeof(game));
-    sortHighScore(HSdata);
-
-	// simpan kembali ke file save highscore
-    file = fopen("score.dat", "wb");
-    if (!file) return;
-    int code = fwrite(HSdata, sizeof(HSdata), 1, file);
-    fclose(file);
-}
-/**
- * Menyortir isi dari file highscore
- * @author Ihsan Fauzan Hanif
- */
-void sortHighScore(Game *game)
-{
-    Game temp;
-    int i, j;
-    for (i = 0; i < MAX_SAVED_SCORE; i++)
-    {
-        for (j = MAX_SAVED_SCORE - 1; j > i; j--)
-        {
-            if (game[j].score > game[j - 1].score)
-            {
-                memset(&temp, 0, sizeof(Game));
-                memcpy(&temp, &game[j], sizeof(Game));
-
-                memset(&game[j], 0, sizeof(Game));
-                memcpy(&game[j], &game[j - 1], sizeof(Game));
-                
-                memset(&game[j - 1], 0, sizeof(Game));
-                memcpy(&game[j - 1], &temp, sizeof(Game));
-            }
-        }
-    }
-}
-/**
- * Menghapus semua skor yang tersimpan
- * @author Ihsan Fauzan Hanif
- */
-bool deleteAllHighScore()
-{
-    return remove("score.dat") == 0? true : false;
-}
-/**
  * Menampilkan taktik bermain Tower of hanoi@author 
  * Diana Fauziah
  * 07/22/21
  */
-void ShowStep(Game *game, int choose){
+void showStep(Game *game, int choose){
 	cls();
 	printf("===============================================================\n");
-	printf("\t\t\t\t TAKTIK PERMAINAN TOWER OF HANOI\n");
+	printf("\t\tTAKTIK PERMAINAN TOWER OF HANOI\n");
 	printf("===============================================================\n\n");
 	
+	printf("%d Cakram\n", choose);
+	printf("-------------------------------------------\n");
+	printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+	printf("2. untuk kasus ini terdapat 5 cakram berarti -> 2^%d - 1 = %d (langkah)\n", choose, getMinMoves(choose));
 	if (choose == 1){
-		printf("Level 1\n");
-		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 2 piringan berarti -> 2^2 - 1 = 3 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
+	}else if (choose == 2){
 		printf("3. disk 1 -> tower 3\n");
 		printf("4. disk 2 -> tower 2\n");
 		printf("5. disk 1 -> tower 2\n");
-	}else if (choose == 2){
-		printf("Level 2\n");
-		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 3 piringan berarti -> 2^3 - 1 = 7 (langkah)\n");
+	}else if (choose == 3){
 		printf("3. disk 1 -> tower 3\n");
 		printf("4. disk 2 -> tower 2\n");
 		printf("5. disk 1 -> tower 2\n");
@@ -999,52 +649,14 @@ void ShowStep(Game *game, int choose){
 		printf("7. disk 1 -> tower 1\n");
 		printf("8. disk 2 -> tower 3\n");
 		printf("9. disk 1 -> tower 3\n");
-	}else if (choose == 3){
-		printf("Level 3\n");
-		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 4 piringan berarti -> 2^4 - 1 = 15 (langkah)\n");
-		printf("3. disk 1 -> tower 3\n");
-		printf("....................\n");
-		printf("15. disk 1 -> tower 2\n");
 	}else if (choose == 4){
-		printf("Level 4\n");
-		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
 		printf("3. disk 1 -> tower 3\n");
 		printf("....................\n");
-		printf("31. disk 1 -> tower 2\n");
+		printf("17. disk 1 -> tower 2\n");
 	}else if (choose == 5){
-		printf("Level 5\n");
-		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
 		printf("3. disk 1 -> tower 3\n");
 		printf("....................\n");
-		printf("15. disk 1 -> tower 2\n");
-	}
-}
-/**
- * Menampilkan seluruh daftar high score
- * @author Ihsan Fauzan Hanif
- */
-void printAllHighScore()
-{
-	int maxSize = sizeof(Game) * MAX_SAVED_SCORE;
-    Game HSdata[MAX_SAVED_SCORE] = {0};
-	Game game;
-
-	// baca semua isi file dan masukkan pada array highscore
-    FILE *file = fopen("score.dat", "rb");
-    if (file) fread(HSdata, maxSize, 1, file);
-    fclose(file);
-	int i;
-	for (i = 0; i < MAX_SAVED_SCORE; i++)
-	{
-		game = HSdata[i];
-		if (game.index == 0 && strlen(game.playerName) == 0) printf("%02d. [Kosong]\n", i + 1);
-		else printf("%02d. %s - Skor: %d - Total Langkah: %d\n", i + 1, game.playerName, game.score, game.moveCount);
+		printf("34. disk 1 -> tower 2\n");
 	}
 }
 /**

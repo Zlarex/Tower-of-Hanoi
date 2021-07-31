@@ -72,5 +72,10 @@ void pop(Tower *tower, int* width);
  * @author Ihsan Fauzan Hanif
  */
 int getDiskCount(Tower* tower);
+/**
+ * Memindahkan blok pada tower yang satu ke tower yang lain
+ * @author Diana Fauziah
+ */
+void moveDisk(Tower* src, Tower* dest);
 
 #endif

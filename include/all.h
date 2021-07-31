@@ -14,7 +14,13 @@
 #ifndef __ALL_HEADER_H__
 #define __ALL_HEADER_H__
 
+#define ESC 27		// key ESC
+#define ENTER 13	// key ENTER
+
 #include "tower.h"
 #include "game.h"
+#include "highscore.h"
+#include "utility.h"
+#include "menu.h"
 
 #endif

@@ -123,3 +123,17 @@ int getDiskCount(Tower* tower)
 	}
 	return count;
 }
+/**
+ * Memindahkan blok pada tower yang satu ke tower yang lain
+ * @author
+ * Diana Fauziah
+ * 07/22/21
+ */
+void moveDisk(Tower* src, Tower* dest)
+{
+	// lepas disk dari tower satu, ambil datanya, kemudian tower tujuan diisi disk
+	// dengan data (width) yang dilepas tadi
+    int width = 0;
+    pop(src, &width);
+    push(dest, width);
+}
