@@ -83,7 +83,7 @@ int getMaxTime(int towerLevel);
  * Mendapatkan pergerakan minimal yang bisa dilakukan untuk menyelesaikan permainan
  * @author Ihsan Fauzan Hanif
  */
-int getMinMoves(int towerLevel);
+int getMinMoves(int maxDisk);
 /**
  * Menampilkan taktik bermain Tower of hanoi
  * @author 

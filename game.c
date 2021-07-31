@@ -73,7 +73,7 @@ int getMaxTime(int towerLevel) {
  * Mendapatkan pergerakan minimal yang bisa dilakukan untuk menyelesaikan permainan
  * @author
  */
-int getMinMoves(int towerLevel)
+int getMinMoves(int maxDisk)
 {
 	// bit shifting kurangi satu
 	// misal untuk 2 tower, seminimalnya ada 3 langkah,
@@ -82,7 +82,7 @@ int getMinMoves(int towerLevel)
 	// sebelum shift: 0 0 0 1 [1]
 	// setelah shift: 0 1 0 0 [4]
 	// setelah dikurangi 1: 0 0 1 1 [3]
-	return 1 << towerLevel - 1;
+	return (1 << maxDisk) - 1;
 }
 /**
  * Menyimpan game dengan posisi penyimpanan berdasarkan index
@@ -634,7 +634,7 @@ void showStep(Game *game, int choose){
 	printf("%d Cakram\n", choose);
 	printf("-------------------------------------------\n");
 	printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-	printf("2. untuk kasus ini terdapat 5 cakram berarti -> 2^%d - 1 = %d (langkah)\n", choose, getMinMoves(choose));
+	printf("2. untuk kasus ini terdapat %d cakram berarti -> 2^%d - 1 = %d (langkah)\n", choose, choose, getMinMoves(choose));
 	if (choose == 1){
 		printf("3. disk 1 -> tower 3\n");
 	}else if (choose == 2){
