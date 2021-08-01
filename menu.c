@@ -42,7 +42,7 @@ void menuLoadGame(Game *game) {
 	printf("Masukkan posisi dari game yang ingin dilanjutkan : ");  
 	scanf ("%d", &pilihan); 
 	fflush(stdin);
-	if (pilihan <= 0 || pilihan > count) return;
+	if (pilihan <= 0 || pilihan > MAX_SAVED_GAME) return;
 	// ambil data permainan berdasarkan index/pilihan (hitungan
 	// dimulai dari 0)
 	*game = loadGame(--pilihan);
