@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <conio.h>
 
 #include "include/all.h"
@@ -46,6 +47,7 @@ void menuLoadGame(Game *game) {
 	// ambil data permainan berdasarkan index/pilihan (hitungan
 	// dimulai dari 0)
 	*game = loadGame(--pilihan);
+	if (game->index == 0 && strlen(game->playerName) == 0) return
 	menuLobby(game);
 }
 /**
