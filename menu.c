@@ -47,7 +47,7 @@ void menuLoadGame(Game *game) {
 	// ambil data permainan berdasarkan index/pilihan (hitungan
 	// dimulai dari 0)
 	*game = loadGame(--pilihan);
-	if (game->index == 0 && strlen(game->playerName) == 0) return
+	if (game->index == 0 && strlen(game->playerName) == 0) return;
 	menuLobby(game);
 }
 /**
