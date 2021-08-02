@@ -88,11 +88,14 @@ void menuHighScore(Game *game)
 		scanf ("%c", &pilihan);
 		fflush(stdin);
 		switch (pilihan) {
+			case 'Y' :
 			case 'y' :
 				deleteAllHighScore();
 				return menuHighScore(game);
-				break; 
-			case 'n' : break;
+				break;
+			case 'N' :
+			case 'n' :
+				break;
 			default : printf ("Anda memasukkan nilai yang salah :( ");
 		}
 	}
