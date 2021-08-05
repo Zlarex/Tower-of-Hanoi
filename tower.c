@@ -24,38 +24,6 @@ void createTower(Tower *tower){
 	(*tower).top = NULL;
 }
 /**
- * Inisialisasi disk, bertujuan untuk mengatur agar disk memiliki isi (panjang) sesuai
- * dengan width
- * @author Diana Fauziah
- */
-void createDisk(Address disk, int width)
-{
-	disk->width = width;
-	disk->next = NULL;
-}
-/**
- * Membuat disk baru dengan panjang disk yang telah ditentukan
- * @author M Aziz Taufiqurrahman
- * Dimodifikasi oleh : Ihsan Fauzan Hanif
- */
-Address allocate(int width) {
-	Address x = malloc(sizeof(Disk));
-	if (x)
-		{
-  		x->width = width;
-  		x->next = NULL;
-	}
-	return x;
-}
-/**
- * Membebaskan memori yang dipesan oleh pointer pada disk
- * @author Ihsan Fauzan Hanif
- */
-void deallocate(Address disk)
-{
-    if (disk) free(disk);
-}
-/**
  * Mengecek apakah tower memiliki disk atau tidak
  * @author Diana Fauziah
  */
@@ -112,16 +80,8 @@ void pop(Tower *tower, int* width)
  */
 int getDiskCount(Tower* tower)
 {
-	Address ptr = tower->top;
-	int count = 0;
-
-	// increment sampai pointernya NULL
-	while(ptr)
-	{
-		count++;
-		ptr = ptr->next;
-	}
-	return count;
+	// jumlah = index top dari tower + 1
+	return tower->top + 1;
 }
 /**
  * Memindahkan blok pada tower yang satu ke tower yang lain

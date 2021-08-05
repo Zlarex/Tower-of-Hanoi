@@ -16,6 +16,7 @@
 
 #define ESC 27		// key ESC
 #define ENTER 13	// key ENTER
+#define MAX_DISK 5
 
 #include "tower.h"
 #include "game.h"

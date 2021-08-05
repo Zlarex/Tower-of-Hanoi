@@ -17,18 +17,10 @@
 #include <stdbool.h>
 #include "all.h"
 
-// Pointer pada disk/cakram
-typedef struct _Disk* Address;
-
-// Disk pada menara
-typedef struct _Disk {
-    int width;
-    Address next;
-} Disk;
-
-// Tower
+// Tower (Stack)
 typedef struct _Tower {
-    Address top;
+    int width[MAX_DISK];
+    int top;
 } Tower;
 
 /**
@@ -36,22 +28,6 @@ typedef struct _Tower {
  * @author M Aziz Taufiqurrahman
  */
 void createTower(Tower *tower);
-/**
- * Inisialisasi disk, bertujuan untuk mengatur agar disk memiliki isi (panjang) sesuai
- * dengan width
- * @author Diana Fauziah
- */
-void createDisk(Address disk, int width);
-/**
- * Membuat disk baru dengan panjang disk yang telah ditentukan
- * @author M Aziz Taufiqurrahman
- */
-Address allocate(int width);
-/**
- * Membebaskan memori yang dipesan oleh pointer pada disk
- * @author Ihsan Fauzan Hanif
- */
-void deallocate(Address disk);
 /**
  * Mengecek apakah tower memiliki disk atau tidak
  * @author Diana Fauziah
