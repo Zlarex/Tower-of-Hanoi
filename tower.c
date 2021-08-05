@@ -14,59 +14,18 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include "include/all.h"
+#include "all.h"
 
 /**
- * [Deskripsi]
  * Inisialisasi tower, bertujuan untuk mengeset agar isi dari tower kosong
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
-void createTower(Tower *tower)
-{
-
+void createTower(Tower *tower){
+	(*tower).top = NULL;
 }
-
 /**
- * [Deskripsi]
- * Inisialisasi disk, bertujuan untuk mengatur agar disk memiliki isi (panjang) sesuai
- * dengan width
- * 
- * @author
- */
-void createDisk(Address disk, int width)
-{
-	disk->width = width;
-	disk->next = NULL;
-}
-
-/**
- * [Deskripsi]
- * Membuat disk baru dengan panjang disk yang telah ditentukan
- * 
- * @author
- */
-Address allocate(int width)
-{
-
-}
-
-/**
- * [Deskripsi]
- * Membebaskan memori yang dipesan oleh pointer pada disk
- * 
- * @author
- */
-void deallocate(Address disk)
-{
-
-}
-
-/**
- * [Deskripsi]
  * Mengecek apakah tower memiliki disk atau tidak
- * 
- * @author
+ * @author Diana Fauziah
  */
 bool isEmpty(Tower tower)
 {
@@ -76,35 +35,56 @@ bool isEmpty(Tower tower)
 		return false;
 	}
 }
-
-
 /**
- * [Deskripsi]
  * Memasukkan disk pada tower, dengan panjang disk yang diminta oleh width
- * 
- * @author
+ * @author Diana Fauziah
  */
 void push(Tower *tower, int width)
 {
-	Address p;
-	
-	p = allocate(width);
-	if (isEmpty(*tower)){	//tower kosong
-		tower->top = p;
-	}else{					//tower ada isi
-		p->next = tower->top;
-		tower->top = p;
-	}
-	
+	T->width[T->top] = width;
 }
-
 /**
- * [Deskripsi]
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
- * 
- * @author
+ * @author M Aziz Taufiqurrahman
  */
 void pop(Tower *tower, int* width)
 {
-
+	if ((*tower).top != NULL) {
+		Disk *del = (*tower).top;
+		
+		if (!del->next) {
+		(*tower).top = NULL;
+		}
+		else {
+			(*tower).top = (*tower).top -> next;
+		}
+		*width = del->width;
+		deallocate(del);
+		} 
+		else {
+			printf ("Disk udah kosong");
+		}
+}
+/**
+ * Mendapatkan jumlah disk yang berada pada satu tower
+ * @author Ihsan Fauzan Hanif
+ */
+int getDiskCount(Tower* tower)
+{
+	// jumlah = index top dari tower + 1
+	return tower->top + 1;
+}
+/**
+ * Memindahkan blok pada tower yang satu ke tower yang lain
+ * @author
+ * Diana Fauziah
+ * 07/22/21
+ */
+void moveDisk(Tower* src, Tower* dest)
+{
+	// lepas disk dari tower satu, ambil datanya, kemudian tower tujuan diisi disk
+	// dengan data (width) yang dilepas tadi
+    int width = 0;
+    pop(src, &width);
+    push(dest, width);
 }
