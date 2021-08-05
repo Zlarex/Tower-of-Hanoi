@@ -302,46 +302,46 @@ void ShowStep(Game *game, int choose){
 	if (choose == 1){
 		printf("Level 1\n");
 		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 2 piringan berarti -> 2^2 - 1 = 3 (langkah)\n");
-		printf("3. disk 1 -> tower C\n");
-		printf("4. disk 2 -> tower B\n");
-		printf("5. disk 1 -> tower B\n");
+		printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 2 disk berarti -> 2^2 - 1 = 3 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
+		printf("4. disk 2 -> tower 2\n");
+		printf("5. disk 1 -> tower 2\n");
 	}else if (choose == 2){
 		printf("Level 2\n");
 		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 3 piringan berarti -> 2^3 - 1 = 7 (langkah)\n");
-		printf("3. disk 1 -> tower C\n");
-		printf("4. disk 2 -> tower B\n");
-		printf("5. disk 1 -> tower B\n");
-		printf("6. disk 3 -> tower C\n");
-		printf("7. disk 1 -> tower A\n");
-		printf("8. disk 2 -> tower C\n");
-		printf("9. disk 1 -> tower C\n");
+		printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 3 disk berarti -> 2^3 - 1 = 7 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
+		printf("4. disk 2 -> tower 2\n");
+		printf("5. disk 1 -> tower 2\n");
+		printf("6. disk 3 -> tower 3\n");
+		printf("7. disk 1 -> tower 1\n");
+		printf("8. disk 2 -> tower 3\n");
+		printf("9. disk 1 -> tower 3\n");
 	}else if (choose == 3){
 		printf("Level 3\n");
 		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 4 piringan berarti -> 2^4 - 1 = 15 (langkah)\n");
-		printf("3. disk 1 -> tower C\n");
+		printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 4 disk berarti -> 2^4 - 1 = 15 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
 		printf("....................\n");
-		printf("15. disk 1 -> tower B\n");
+		printf("15. disk 1 -> tower 2\n");
 	}else if (choose == 4){
 		printf("Level 4\n");
 		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
-		printf("3. disk 1 -> tower C\n");
+		printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 5 disk berarti -> 2^5 - 1 = 31 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
 		printf("....................\n");
-		printf("31. disk 1 -> tower B\n");
+		printf("31. disk 1 -> tower 2\n");
 	}else if (choose == 5){
 		printf("Level 5\n");
 		printf("-------------------------------------------\n");
-		printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
-		printf("2. untuk kasus ini terdapat 5 piringan berarti -> 2^5 - 1 = 31 (langkah)\n");
-		printf("3. disk 1 -> tower C\n");
+		printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
+		printf("2. untuk kasus ini terdapat 5 disk berarti -> 2^5 - 1 = 31 (langkah)\n");
+		printf("3. disk 1 -> tower 3\n");
 		printf("....................\n");
-		printf("15. disk 1 -> tower B\n");
+		printf("15. disk 1 -> tower 2\n");
 	}
 }
