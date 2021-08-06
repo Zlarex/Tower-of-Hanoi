@@ -20,7 +20,8 @@
  * Inisialisasi tower, bertujuan untuk mengeset agar isi dari tower kosong
  * @author M Aziz Taufiqurrahman
  */
-void createTower(Tower *tower){
+void createTower(Tower *tower)
+{
 	memset(tower, 0, sizeof(*tower));
 }
 /**
@@ -41,16 +42,7 @@ bool isEmpty(Tower tower)
  */
 void push(Tower *tower, int width)
 {
-	Address p;
-	
-	p = allocate(width);
-	if (isEmpty(*tower)){	//tower kosong
-		tower->top = p;
-	}else{					//tower ada isi
-		p->next = tower->top;
-		tower->top = p;
-	}
-	
+	tower->width[tower->top] = width;
 }
 /**
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width

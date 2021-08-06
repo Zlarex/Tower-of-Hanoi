@@ -633,7 +633,7 @@ void showStep(Game *game, int choose){
 	
 	printf("%d Cakram\n", choose);
 	printf("-------------------------------------------\n");
-	printf("1. Gunakan rumus f(n) = 2^n-1), untuk menghitung jumlah minimal langkah\n");
+	printf("1. Gunakan rumus = 2^banyaknya_disk - 1, untuk menghitung jumlah minimal langkah\n");
 	printf("2. untuk kasus ini terdapat %d cakram berarti -> 2^%d - 1 = %d (langkah)\n", choose, choose, getMinMoves(choose));
 	if (choose == 1){
 		printf("3. disk 1 -> tower 3\n");
