@@ -21,7 +21,7 @@
  * @author M Aziz Taufiqurrahman
  */
 void createTower(Tower *tower){
-	(*tower).top = NULL;
+	memset(tower, 0, sizeof(*tower));
 }
 /**
  * Mengecek apakah tower memiliki disk atau tidak
@@ -56,23 +56,10 @@ void push(Tower *tower, int width)
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
  * @author M Aziz Taufiqurrahman
  */
-void pop(Tower *tower, int* width)
+void pop(Tower *tower, int *width)
 {
-	if ((*tower).top != NULL) {
-		Disk *del = (*tower).top;
-		
-		if (!del->next) {
-		(*tower).top = NULL;
-		}
-		else {
-			(*tower).top = (*tower).top -> next;
-		}
-		*width = del->width;
-		deallocate(del);
-		} 
-		else {
-			printf ("Disk udah kosong");
-		}
+  *width = tower->width[tower->top-1];
+  (*tower).top = (*tower).top - 1;
 }
 /**
  * Mendapatkan jumlah disk yang berada pada satu tower
