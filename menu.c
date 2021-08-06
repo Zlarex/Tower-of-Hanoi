@@ -297,5 +297,9 @@ void menuGameResolve(Game* game, bool isWin)
 	scanf("%c", &input);
 	fflush(stdin);
 
-	if (input == 'Y' || input == 'y') return menuLobby(game);
+	if (input == 'Y' || input == 'y')
+	{
+		game->moveCount = 0;
+		return menuLobby(game);
+	}
 }

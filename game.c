@@ -362,9 +362,12 @@ void printTower(Game* g)
 	char* output = malloc(width + 1);
 	int height = g->maxDisk + 1;
 
-	Address* diskLeft = &(g->left).top;
-	Address* diskMiddle = &(g->middle).top;
-	Address* diskRight = &(g->right).top;
+	int validIndex = g->left.top - 1;
+	int* diskLeft = &g->left.width[validIndex < 0? 0 : validIndex];
+	validIndex = g->middle.top - 1;
+	int* diskMiddle = &g->middle.width[validIndex < 0? 0 : validIndex];
+	validIndex = g->right.top - 1;
+	int* diskRight = &g->right.width[validIndex < 0? 0 : validIndex];
 
 	int heightDiskLeft = getDiskCount(&(g->left));
 	int heightDiskMiddle = getDiskCount(&(g->middle));
@@ -395,17 +398,17 @@ void printTower(Game* g)
 			// loop untuk setiap disk
 			for (j = 0; j < 3; j++)
 			{
-				Address **diskPtr = (j == 0)? &diskLeft : (j == 1)? &diskMiddle : &diskRight;
+				int **diskPtr = (j == 0)? &diskLeft : (j == 1)? &diskMiddle : &diskRight;
 				int *heightDisk = (j == 0)? &heightDiskLeft : (j == 1)? &heightDiskMiddle : &heightDiskRight;
 
-				if (!(*diskPtr) || !(**diskPtr)) continue;
+				if (!diskPtr || !*diskPtr) continue;
 				if (i - 1 <= *heightDisk)
 				{
 					// copy nilai UI_BLOCK ke output
-					int blockLen = ((**diskPtr)->width * 2) + 1;
-					int pos = middlePos[j] - (**diskPtr)->width * sizeEach;
-					memset(output + pos, UI_BLOCK, ((**diskPtr)->width * sizeEach) * 2 + 1);
-					*diskPtr = &(**diskPtr)->next;
+					int blockLen = **diskPtr * 2 + 1;
+					int pos = middlePos[j] - **diskPtr * sizeEach;
+					memset(output + pos, UI_BLOCK, **diskPtr * sizeEach * 2 + 1);
+					*diskPtr = (&(**diskPtr) - 1);
 				}
 			}
 		}
@@ -551,8 +554,8 @@ void *gameRun(void *argsData)
 			Tower *from = src == 1? &game->left : src == 2? &game->middle : &game->right;
 			Tower *to = dest == 1? &game->left : dest == 2? &game->middle : &game->right;
 
-			int topSrc = from->top? from->top->width : 0;
-			int topDest = to->top? to->top->width : 0;
+			int topSrc = from->top > 0? from->width[from->top] : 0;
+			int topDest = to->top > 0? to->width[from->top] : 0;
 
 			// pindahkan disk jika disk asal lebih kecil dari tujuan, atau tujuannya kosong
 			// dan juga posisinya harus berbeda

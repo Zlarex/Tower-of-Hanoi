@@ -30,7 +30,7 @@ void createTower(Tower *tower)
  */
 bool isEmpty(Tower tower)
 {
-	if(tower.top == NULL){
+	if(tower.top == 0){
 		return true;
 	}else {
 		return false;
@@ -43,6 +43,7 @@ bool isEmpty(Tower tower)
 void push(Tower *tower, int width)
 {
 	tower->width[tower->top] = width;
+	tower->top++;
 }
 /**
  * Menghapus disk pada tower, dengan panjang disk yang ditampung oleh width
@@ -59,8 +60,8 @@ void pop(Tower *tower, int *width)
  */
 int getDiskCount(Tower* tower)
 {
-	// jumlah = index top dari tower + 1
-	return tower->top + 1;
+	// jumlah = index top dari tower
+	return tower->top;
 }
 /**
  * Memindahkan blok pada tower yang satu ke tower yang lain
