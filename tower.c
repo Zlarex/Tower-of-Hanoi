@@ -23,7 +23,7 @@
  * @author M Aziz Taufiqurrahman
  */
 void createTower(Tower *tower){
-	(*tower).top = NULL;
+	memset(tower, 0, sizeof(*tower));
 }
 
 /**
@@ -95,20 +95,7 @@ void push(Tower *tower, int width)
  * 
  * @author M Aziz Taufiqurrahman
  */
-void pop(Tower *tower, int* width)
-{
-	if ((*tower).top != NULL) {
-		Disk *del = (*tower).top;
-		
-		if (width != 0) {
-		(*tower).top = NULL;
-		}
-		else {
-			(*tower).top = (*tower).top -> next;
-		}
-		deallocate(del);
-		} 
-		else {
-			printf ("Disk udah kosong");
-		}
+void pop(Tower *tower, int *width){
+  *width = tower->width[tower->top-1];
+  (*tower).top = (*tower).top - 1;
 }
