@@ -239,11 +239,7 @@ void menuGameWin(Game* game)
 {
 	// update skor jika menang
 	// perhitungan skor:
-	// level 1 ke 2 = 10 + 30 - 3 = 37
-	// level 2 ke 3 = 20 + 60 - 7 = 73
-	// level 3 ke 4 = 30 + 100 - 15 = 115
-	// level 4 ke 5 = 40 + 300 - 31 = 309
-	// level 5 = 500
+	// skor = skor + (level * 10) + sisa waktu tersisa - jumlah langkah
 	if (game->towerLevel == 5) game->score += 500;
 	else game->score += (game->towerLevel * 10) + game->timeLeft - game->moveCount;
 	printf("Skor Anda: %d\n", game->score);

@@ -405,9 +405,11 @@ void printTower(Game* g)
 				if (i - 1 <= *heightDisk)
 				{
 					// copy nilai UI_BLOCK ke output
-					int blockLen = **diskPtr * 2 + 1;
+					int blockLen = **diskPtr * sizeEach * 2 + 1;
 					int pos = middlePos[j] - **diskPtr * sizeEach;
-					memset(output + pos, UI_BLOCK, **diskPtr * sizeEach * 2 + 1);
+					memset(output + pos, UI_BLOCK, blockLen);
+
+					// mundurkan address pada pointer
 					*diskPtr = (&(**diskPtr) - 1);
 				}
 			}
@@ -554,8 +556,8 @@ void *gameRun(void *argsData)
 			Tower *from = src == 1? &game->left : src == 2? &game->middle : &game->right;
 			Tower *to = dest == 1? &game->left : dest == 2? &game->middle : &game->right;
 
-			int topSrc = from->top > 0? from->width[from->top] : 0;
-			int topDest = to->top > 0? to->width[from->top] : 0;
+			int topSrc = from->top > 0? from->width[from->top - 1] : 0;
+			int topDest = to->top > 0? to->width[from->top - 1] : 0;
 
 			// pindahkan disk jika disk asal lebih kecil dari tujuan, atau tujuannya kosong
 			// dan juga posisinya harus berbeda
@@ -567,7 +569,13 @@ void *gameRun(void *argsData)
 				moveDisk(from, to);
 				game->moveCount++;
 				// jika total disk di tower kanan sama dengan jumlah maksimum maka pemain menang
-				if (getDiskCount(&game->right) == game->maxDisk) game->state = WIN;
+				if (getDiskCount(&game->right) == game->maxDisk)
+				{
+					game->state = WIN;
+					
+					// hentikan timer
+					pthread_cancel(*thTimer);
+				}
 			}
 			else showInvalidMsg = true;
         }
